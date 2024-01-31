@@ -1,0 +1,90 @@
+------------------
+Starting Tests
+------------------
+
+------------------Song Test 1------------------
+FakeSong FakeArtist 300
+----------------End Song Test 1----------------
+
+------------------Node Test 1------------------
+Songs Made
+Nodes Made
+FakeSong1 | FakeSong1
+Nodes deleted
+Songs deleted
+----------------End Node Test 1----------------
+
+------------------Constructor Test 1------------------
+Songs Made
+Playlist Made
+FakeSong2, FakeSong1
+----------------End Constructor Test 1----------------
+
+------------------Constructor Test 2------------------
+Songs Made
+Playlist Made
+Removed: FakeSong2 FakeSong4
+Size: 4
+FakeSong6 FakeSong5 FakeSong3 FakeSong1
+----------------End Constructor Test 2----------------
+
+---------------Copy Constructor Test 1----------------
+Songs Made
+Playlist Made
+6 | 6
+FakeSong6
+FakeSong5
+FakeSong4
+FakeSong3
+FakeSong2
+FakeSong1
+-------------End Copy Constructor Test 1--------------
+
+--------OverLoaded Assignment Operator Test 1---------
+Songs Made
+Playlist 1 Made
+FakeSong3 FakeSong2 FakeSong1
+Playlist 2 Made and copied. Size of: 3
+FakeSong3 FakeSong2 FakeSong1
+Original deleted;
+FakeSong3 FakeSong2 FakeSong1
+------End OverLoaded Assignment Operator Test 1-------
+
+---------------------Swap Test 1----------------------
+Songs Made
+Playlist Made
+Pre-swap:  FakeSong3 FakeSong2 FakeSong1
+Post-swap: FakeSong3 FakeSong1 FakeSong2
+-------------------End Swap Test 1--------------------
+
+---------------------Swap Test 2----------------------
+Songs Made
+Playlist Made
+Pre-swap:  FakeSong3 FakeSong2 FakeSong1
+Post-swap: FakeSong2 FakeSong3 FakeSong1
+-------------------End Swap Test 2--------------------
+
+---------------------Swap Test 3----------------------
+Songs Made
+Playlist Made
+Pre-swap:  FakeSong6 FakeSong5 FakeSong4 FakeSong3 FakeSong2 FakeSong1
+Post-swap: FakeSong5 FakeSong6 FakeSong3 FakeSong4 FakeSong1 FakeSong2
+-------------------End Swap Test 3--------------------
+
+---------------------Swap Test 4----------------------
+Songs Made
+Playlist Made
+Pre-swap:  FakeSong6 FakeSong5 FakeSong4 FakeSong3 FakeSong2 FakeSong1
+Post-swap: FakeSong2 FakeSong5 FakeSong1 FakeSong3 FakeSong6 FakeSong4
+-------------------End Swap Test 4--------------------
+
+---------------------Swap Test 5----------------------
+Songs Made
+Playlist Made
+Pre-swap:  FakeSong6 FakeSong5 FakeSong4 FakeSong3 FakeSong2 FakeSong1
+Post-swap: FakeSong1 FakeSong5 FakeSong2 FakeSong3 FakeSong4 FakeSong6
+-------------------End Swap Test 5--------------------
+
+-------------------
+Ending Tests
+-------------------

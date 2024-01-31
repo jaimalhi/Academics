@@ -1,0 +1,34 @@
+/* Use this instead of char array and HashFunction() for more efficency
+template <class T>
+int Set<T>::hasher(string word) const { 
+    unsigned hash = charscaler(word[0]);
+    unsigned len = word.size();
+    for (unsigned i = 0; i < len - 1; i++){
+        int nextchar = charscaler(word[i + 1]); // need nextchar so that next char doesnt get modulused
+        hash = (hash * BASE) % M + nextchar; // horners method implementation where you %M everytime 
+    }
+
+    hash = (hash * scale) % M;
+    return hash;
+}
+
+template<class T>
+long int Set<T>::charscaler(char c) const {
+    if (c >= '0' && c <= '9'){
+        return c - '0';
+    }
+    if (c >= 'a' && c <= 'z'){
+        return c - 'a' + 10;
+    }
+    if (c >= 'A' && c <= 'Z'){
+        return c - 'A' + 36;
+    }
+    if (c == '_'){
+        return 62;
+    }
+    else{
+        std::cout << "invalid character inputted";
+        return -1;
+    }
+} 
+*/
