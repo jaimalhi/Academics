@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="histogram.css">
+    <title>A1 Histogram</title>
+</head>
+<body>
+    <div class="container">
+        <div class="mainTitle">
+            <h1>Histogram Generator</h1>
+        </div>  
+        <div class="gradeScale border">
+            <span class="secTitle">Lower bounds</span>
+            <table>
+                <tr>
+                    <td>Max</td>
+                    <td><input name="max" type="number" value="100.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>A+</td>
+                    <td><input name="A+" type="number" value="95.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td><input name="A" type="number" value="90.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>A-</td>
+                    <td><input name="A-" type="number" value="85.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>B+</td>
+                    <td><input name="B+" type="number" value="80.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>B</td>
+                    <td><input name="B" type="number" value="75.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>B-</td>
+                    <td><input name="B-" type="number" value="70.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>C+</td>
+                    <td><input name="C+" type="number" value="65.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td><input name="C" type="number" value="60.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>C-</td>
+                    <td><input name="C-" type="number" value="55.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td><input name="D" type="number" value="50.00" class="gradeNum"></td>
+                </tr>
+                <tr>
+                    <td>F</td>
+                    <td><input name="F" type="number" value="0.00" class="gradeNum"></td>
+                </tr>
+            </table>
+            <p class="tips invisible" id="helperText">Invalid input! Enter a number between 0 and 100 with no overlap</p>
+        </div>
+        <div class="histogram border">
+            <span class="secTitle">Histogram</span>
+            <table class="displayHistogram">
+                <tr>
+                    <td>A+</td><td id="A1">0</td>
+                </tr>
+                <tr>
+                    <td>A</td><td id="A2">0</td>
+                </tr>
+                <tr>
+                    <td>A-</td><td id="A3">0</td>
+                </tr>
+                <tr>
+                    <td>B+</td><td id="B1">0</td>
+                </tr>
+                <tr>
+                    <td>B</td><td id="B2">0</td>
+                </tr>
+                <tr>
+                    <td>B-</td><td id="B3">0</td>
+                </tr>
+                <tr>
+                    <td>C+</td><td id="C1">0</td>
+                </tr>
+                <tr>
+                    <td>C</td><td id="C2">0</td>
+                </tr>
+                <tr>
+                    <td>C-</td><td id="C3">0</td>
+                </tr>
+                <tr>
+                    <td>D</td><td id="D">0</td>
+                </tr>
+                <tr>
+                    <td>F</td><td id="F">0</td>
+                </tr>
+            </table>
+        </div>
+        <div class="newGrade border">
+            New Grade:
+            <input id="inputNum" name="new_grade" type="number">
+            <input id="submit" name="submit" type="submit">
+            <p class="tips invisible" id="helperText">Invalid input! Enter a number between 'F' and 'Max' with no overlap</p>
+        </div>
+    </div>
+    <script src="calculate.js"></script>
+</body>
+</html>

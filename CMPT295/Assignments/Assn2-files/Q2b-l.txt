@@ -1,0 +1,31 @@
+c) 0 000 11 - 0 000 01 = 0.1875 - 0.0625 = 0.125
+
+d) 0 001 11 - 0 001 01 = 0.4375 - 0.3125 = 0.125
+
+e) 0 010 11 - 0 010 01 = 0.875 - 0.625 = 0.25
+
+f) 0 011 11 - 0 011 01 = 1.75 - 1.25 = 0.5
+
+g) 
+- exp = 100 -> we can assume the difference is about (2*previous difference), so 0.5*2 = 1.0
+- exp = 101 -> we can assume the difference is about (2*previous difference), so 1.*2 = 2.0
+- exp = 110 -> we can assume the difference is about (2*previous difference), so 2.0*2 = 4.0
+
+h) 
+Including Denormalized:
+- positive range is [0 000 01, 0 110 11]
+- negative range is [1 000 01, 1 110 11]
+
+i) 
+- for normalized equations E = exp - bias, where bias = 3 for w=6
+- therefore, the range would be from exp = [001 ... 110]
+
+j) 
+- we cannot represent 0.1 or 1/10, this is because in binary 0.1 is an infinite repeating sequence
+- however, since our 6-bit represention only allows for 2 fractional bits, we cannot represent the exact value of 0.1
+
+k) 
+- for a overflow we would require a number to be too large to represent
+- For our 6-bit representation, a number such as 15 would cause an overflow as 15 in binary is 1111, and we cannot show this using only 3 exponent bits
+
+l) Since: M = 7/4 = 1.75, so epsilon should be 0.25 in this case

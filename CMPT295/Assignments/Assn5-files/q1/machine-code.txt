@@ -1,0 +1,30 @@
+objdump -d main.o -> view machine code
+
+Table 1:
+     0:   48 31 c0                xor    %rax,%rax
+     3:   31 c0                   xor    %eax,%eax
+     5:   48 c7 c0 00 00 00 00    mov    $0x0,%rax
+     c:   b8 00 00 00 00          mov    $0x0,%eax
+    11:   29 c0                   sub    %eax,%eax
+    13:   6b c0 00                imul   $0x0,%eax,%eax
+    16:   83 e0 00                and    $0x0,%eax
+
+Table 2:
+    0:   83 c0 01                add    $0x1,%eax
+    3:   67 8d 40 01             lea    0x1(%eax),%eax
+    7:   ff c0                   inc    %eax
+    9:   83 e8 ff                sub    $0xffffffff,%eax
+
+Table 3:
+    0:   83 c0 08                add    $0x8,%eax
+    3:   67 8d 40 08             lea    0x8(%eax),%eax
+
+Table 4:
+    0:   48 83 ec 08             sub    $0x8,%rsp
+    4:   48 89 3c 24             mov    %rdi,(%rsp)
+    8:   57                      push   %rdi
+
+Table 5:
+    0:   48 8b 34 24             mov    (%rsp),%rsi
+    4:   48 83 c4 08             add    $0x8,%rsp
+    8:   5e                      pop    %rsi
