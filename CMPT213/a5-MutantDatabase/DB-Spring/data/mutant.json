@@ -1,0 +1,28 @@
+{
+  "mutants": [
+    {
+      "name": "Shadow",
+      "category": "magic",
+      "id": 0,
+      "weight": 150,
+      "height": 60,
+      "ability": 55
+    },
+    {
+      "name": "Iceman",
+      "category": "ice",
+      "id": 1,
+      "weight": 225,
+      "height": 70,
+      "ability": 75
+    },
+    {
+      "name": "Maki",
+      "category": "fire",
+      "id": 2,
+      "weight": 110,
+      "height": 40,
+      "ability": 65
+    }
+  ]
+}

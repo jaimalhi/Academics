@@ -1,0 +1,46 @@
+CURL Commands:
+curl -i -X GET http://localhost:8080/api/mutant/all
+
+curl -i -X GET http://localhost:8080/api/mutant/1
+
+curl -i -X DELETE http://localhost:8080/api/mutant/1
+
+curl -i -X POST -d "{\"name\":\"Deku\",\"category\":\"Strength\",\"weight\":165,\"height\":70,\"ability\":115}" -H "Content-Type: application/json" localhost:8080/api/mutant/add
+======================================================
+JSON Example:
+"{
+\"name\":\"Deku\",
+\"category\":\"Strength\",
+\"weight\":165,
+\"height\": 70,
+\"ability\":115
+}"
+======================================================
+Categories:
+ice, flight, fire, telepathy, strength, magic, etc.
+======================================================
+#using Vbox container
+HBox1 content: 
+- Btn: get all Mutants, show in content area
+	- Label: number of mutants
+- Btn: get mutant with id
+- Btn: add mutant, create subscene
+	- Subscene: textfields for all attr.
+- Btn: delete mutant with id
+Hbox2 content:
+- this is where we display mutants
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

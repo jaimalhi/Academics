@@ -1,0 +1,26 @@
+.gridpane {
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+}
+
+.play-game {
+    -fx-text-alignment: center;
+    -fx-font-family: Verdana;
+    -fx-font-size: 11pt;
+    -fx-font-weight: bold;
+    -fx-background-color: #5f9ea0;
+    -fx-border-radius: 10px;
+}
+
+.play-game:hover {
+    -fx-background-color: #6495ed;
+}
+
+.all-text {
+    -fx-text-alignment: center;
+    -fx-font-family: Verdana;
+    -fx-font-size: 11pt;
+    -fx-font-weight: bold;
+}

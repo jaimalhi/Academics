@@ -1,0 +1,124 @@
+******************************************
+* Bike Registry by Bobby Chan sn 5555555 *
+******************************************
+
+*************
+* Main Menu *
+*************
+1. List Bikes
+2. Add a new Bike
+3. Remove a Bike
+4. Change Bike attribute
+5. DEBUG: Dump objects (toString)
+6. Exit
+> 2
+Enter Bike owner name:        Ham Porkerson
+Enter Bike type:              Mountain
+Enter Bike's serial number:   E234T5R32
+Enter Bike's brake type:      Disc
+Enter Bike's wheel size:      26
+
+*************
+* Main Menu *
+*************
+1. List Bikes
+2. Add a new Bike
+3. Remove a Bike
+4. Change Bike attribute
+5. DEBUG: Dump objects (toString)
+6. Exit
+> 2
+Enter Bike owner name:        Deji Yorkshire
+Enter Bike type:              Road
+Enter Bike's serial number:   Y944G6H30
+Enter Bike's brake type:      Disc
+Enter Bike's wheel size:      27
+
+*************
+* Main Menu *
+*************
+1. List Bikes
+2. Add a new Bike
+3. Remove a Bike
+4. Change Bike attribute
+5. DEBUG: Dump objects (toString)
+6. Exit
+> 1
+
+******************
+* List of Bikes: *
+******************
+ID  Owner,           Type,      Serial,     Brake,  Wheel Size
+1   Ham Porkerson,   Mountain,  E234T5R32,  Disc,   26
+2   Deji Yorkshire,  Road,      Y944G6H30,  Disc,   27
+
+*************
+* Main Menu *
+*************
+1. List Bikes
+2. Add a new Bike
+3. Remove a Bike
+4. Change Bike attribute
+5. DEBUG: Dump objects (toString)
+6. Exit
+> 5
+All Bike objects:
+1. ca.sfu.cmpt213.as1.Bike[Id:1, Owner:Ham Porkerson, type:Montain, Serial:E234T5R32, Brake:Disc, WheelSize:26]
+2. ca.sfu.cmpt213.as1.Bike[Id:2, Owner:Deji Yorkshire, type:Road, Serial:Y944G6H30, Brake:Disc, WheelSize:27]
+
+*************
+* Main Menu *
+*************
+1. List Bikes
+2. Add a new Bike
+3. Remove a Bike
+4. Change Bike attribute
+5. DEBUG: Dump objects (toString)
+6. Exit
+> 4
+
+******************
+* List of Bikes: *
+******************
+ID  Owner,           Type,      Serial,     Brake,  Wheel Size
+1   Ham Porkerson,   Mountain,  E234T5R32,  Disc,   26
+2   Deji Yorkshire,  Road,      Y944G6H30,  Disc,   27
+Enter ID (0 to cancel)
+> 2
+Which Attribute? 
+> Owner
+New Value
+> Spotted Pig
+Saved!
+
+*************
+* Main Menu *
+*************
+1. List Bikes
+2. Add a new Bike
+3. Remove a Bike
+4. Change Bike attribute
+5. DEBUG: Dump objects (toString)
+6. Exit
+> 4
+
+******************
+* List of Bikes: *
+******************
+ID  Owner,          Type,      Serial,     Brake,  Wheel Size
+1   Ham Porkerson,  Mountain,  E234T5R32,  Disc,   26
+2   Spotted Pig,    Road,      Y944G6H30,  Disc,   27
+Enter ID (0 to cancel)
+> 0
+
+*************
+* Main Menu *
+*************
+1. List Bikes
+2. Add a new Bike
+3. Remove a Bike
+4. Change Bike attribute
+5. DEBUG: Dump objects (toString)
+6. Exit
+> 6
+BYE!
