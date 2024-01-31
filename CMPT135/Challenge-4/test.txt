@@ -1,0 +1,4 @@
+family_egg regular_celery yellow_milk
+fresh_cheese large_deluxe_granola_bar
+fresh_cheese yellow_milk
+family_egg large_deluxe_granola_bar fresh_cheese

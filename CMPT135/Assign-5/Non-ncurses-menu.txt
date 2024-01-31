@@ -1,0 +1,48 @@
+// void Menu::start_menu(){ //TODO: not used w ncurses
+//     cout << "\nWelcome to the Song Database!\n";
+//     cout << "=============================\n";
+//     cout << "(A)dd a song\n";
+//     cout << "(F)ind a song\n";
+//     cout << "(D)elete a song\n";
+//     cout << "(L)ist songs\n";
+//     cout << "(Q)uit\n";
+//     cout << "=============================\n";
+//     read_input();
+// }
+
+// void Menu::read_input(){ //TODO: not usesd w ncurses
+//     Database::check_record_size(); //confirms all records are in place
+//     while(true){
+//         cout << "Enter the letter of your choice: ";
+//         if(!(cin >> input)){ //Invalid Inputs
+//             cout << "Invalid Input! ";
+//             cin.clear();
+//             cin.ignore(1000, '\n');
+//         }
+//         else if(input == 'a' || input == 'A'){
+//             add_song();
+//             return;
+//         }
+//         else if(input == 'f' || input == 'F'){
+//             find_song();
+//             return;
+//         }
+//         else if(input == 'd' || input == 'D'){
+//             del_song();
+//             return;
+//         }
+//         else if(input == 'l' || input == 'L'){
+//             list_song();
+//             return;
+//         }
+//         else if(input == 'q' || input == 'Q'){
+//             quit_db();
+//             return;
+//         }
+//         else{
+//             cout << "Invalid input! ";
+// 			cin.clear();
+// 			cin.ignore(1000, '\n');
+//         }
+//     }
+// }

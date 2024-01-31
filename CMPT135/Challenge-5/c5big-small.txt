@@ -1,0 +1,104 @@
+// challenge_5.cpp
+
+#include "cmpt_error.h"
+#include <cassert>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <sstream> 
+using namespace std;
+
+//Function Declarations
+void read_nums(fstream& file);
+string trim(const string& s);
+
+int main(int argc, char *argv[]) {
+	fstream file;
+
+    ///check that one or more filename arguments provided
+    if (argc < 2) {
+		cout << "Wrong number of arguments\n";
+		return -1;
+    }
+
+    //argv[1] is the first command-line arugment, ie. the file name
+    file.open(argv[1], ios::in);
+
+	read_nums(file);
+}
+
+string trim(const string& s) {
+    int begin = 0;
+    while (begin < s.size() && s[begin] == ' ') begin++;
+    int end = s.size() - 1;
+    while (end >= 0 && s[end] == ' ') end--;
+
+    return s.substr(begin, end - begin + 1);
+}
+
+void read_nums(fstream& file){
+	vector <string> num_string;
+	vector <double> nums;
+	string line;
+
+	//Reading file line-by-line, storing in lines
+    while(getline(file, line)){ 
+		std::stringstream stream(line);
+
+		string n;
+		while(getline(stream, n, ',')){
+			//trim strings to elminate white-space
+			string temp = trim(n); 
+			//Add each number to num_string vector
+			num_string.push_back(temp);
+		}
+	}
+	//For each value in nums
+	for(string s : num_string){
+		//Convert strings to doubles
+		double temp = std::stod(s);
+		//Add each number to nums vector
+		nums.push_back(temp);
+	}
+	//Sort the values in nums vector
+	std::sort(nums.begin(), nums.end());
+
+	double small = nums.front();
+	double big = nums.back();
+	cout << "Smallest #: " << small << endl;
+	cout << "Biggest #: " << big << endl;
+}
+
+/* Gives everything except first number on each line, why?
+/// These were at the top of the page
+struct Number{
+	double num;
+};
+
+istream &operator>>(istream& in, Number& n){
+	in >> n.num;
+	in.ignore(0,',');
+	return in;
+}
+
+/// Within the read_nums() function
+Number n;
+	vector <double> num;
+	string word;
+
+	//While not end of file
+    while(getline(file, word, ',')){ 
+		file >> n;
+		num.push_back(n.num);
+	}
+
+	for(int i = 0; i < 11; i++){
+		cout << "[" << num[i] << "]" << endl;
+	}
+*/
+
+//Bonus: If the numbers file was a space seperated file
+// it would have been easier to read just the numbers and 
+// the sort them smallest-greatest is this was the case
