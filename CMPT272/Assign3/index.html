@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="./public/pig-pixelart.png" />
+      <link rel="stylesheet" href="./src/style.css" />
+      <title>Farmer Hoggett's Farm</title>
+      <link
+         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+         rel="stylesheet"
+         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+         crossorigin="anonymous"
+      />
+   </head>
+   <body>
+      <div id="app">
+         <div class="overlay hidden" id="overlay"></div>
+         <table class="table table-striped table-light table-bordered">
+            <thead>
+               <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Category</th>
+                  <th scope="col" colspan="2">Options</th>
+               </tr>
+            </thead>
+            <tbody>
+               <!-- <tr>
+                  <td>Pig 1</td>
+                  <td>White</td>
+                  <td>More Info</td>
+                  <td>Delete</td>
+               </tr> -->
+            </tbody>
+         </table>
+         <button type="button" class="btn btn-primary" id="add-pig">Add Pig</button>
+         <!-- Add Modal -->
+         <div class="add-modal p-4 hidden">
+            <h3>Add Pig to Table</h3>
+            <form class="mb-2">
+               <input type="text" class="form-control mb-2" placeholder="Name" id="name-select" />
+               <input type="text" class="form-control mb-2" placeholder="Breed" id="breed-select" />
+               <input
+                  type="number"
+                  class="form-control mb-2"
+                  placeholder="Height"
+                  id="height-select"
+                  min="0"
+               />
+               <input
+                  type="number"
+                  class="form-control mb-2"
+                  placeholder="Weight"
+                  id="weight-select"
+                  min="0"
+               />
+               <!-- Personality -->
+               <select class="form-select mb-2" id="personality-select">
+                  <option selected>Personality</option>
+                  <option value="Hardy">Hardy</option>
+                  <option value="Lonely">Lonely</option>
+                  <option value="Adamant">Adamant</option>
+                  <option value="Naughty">Naughty</option>
+                  <option value="Brave">Brave</option>
+                  <!--  -->
+                  <option value="Bold">Bold</option>
+                  <option value="Docile">Docile</option>
+                  <option value="Impish">Impish</option>
+                  <option value="Lax">Lax</option>
+                  <option value="Relaxed">Relaxed</option>
+                  <!--  -->
+                  <option value="Modest">Modest</option>
+                  <option value="Mild">Mild</option>
+                  <option value="Bashful">Bashful</option>
+                  <option value="Rash">Rash</option>
+                  <option value="Quiet">Quiet</option>
+                  <!--  -->
+                  <option value="Calm">Calm</option>
+                  <option value="Gentle">Gentle</option>
+                  <option value="Careful">Careful</option>
+                  <option value="Quirky">Quirky</option>
+                  <option value="Sassy">Sassy</option>
+                  <!--  -->
+                  <option value="Timid">Timid</option>
+                  <option value="Hasty">Hasty</option>
+                  <option value="Jolly">Jolly</option>
+                  <option value="Naive">Naive</option>
+                  <option value="Serious">Serious</option>
+               </select>
+               <!-- Category -->
+               <select class="form-select mb-2" id="category-select">
+                  <option selected>Category</option>
+                  <option value="black-pig">Black Pig</option>
+                  <option value="chestnut-pig">Chestnut Pig</option>
+                  <option value="grey-pig">Grey Pig</option>
+                  <option value="white-pig">White Pig</option>
+               </select>
+               <!-- Addtional Category options -->
+               <div class="additional-fields hidden">
+                  <div class="form-group black-pig-fields">
+                     <input
+                        type="number"
+                        class="form-control mb-2"
+                        placeholder="Strength"
+                        min="0"
+                        max="10"
+                     />
+                  </div>
+                  <div class="form-group chestnut-pig-fields">
+                     <input type="text" class="form-control mb-2" placeholder="Language" />
+                  </div>
+                  <div class="form-group grey-pig-fields">
+                     <input
+                        type="number"
+                        class="form-control mb-2"
+                        placeholder="Swimming Ability"
+                        min="0"
+                        max="100"
+                     />
+                  </div>
+                  <div class="form-group white-pig-fields">
+                     <input
+                        type="number"
+                        class="form-control mb-2"
+                        placeholder="Running Ability"
+                        min="0"
+                        max="100"
+                     />
+                  </div>
+               </div>
+            </form>
+            <div class="modal-btns">
+               <button type="button" class="btn btn-secondary mx-1" id="close-add-modal">
+                  Close
+               </button>
+               <button type="button" class="btn btn-primary mx-1" disabled id="submit-new-pig">
+                  Add Pig
+               </button>
+            </div>
+         </div>
+         <!-- Confirm Deletion Modal -->
+         <div class="modal-btns options-modal hidden" id="confirm-delete-modal">
+            <h3>Delete this Pig?</h3>
+            <button type="button" class="btn btn-secondary mx-1" id="close-delete-modal">
+               Cancel
+            </button>
+            <button type="button" class="btn btn-danger mx-1" id="confirm-delete-btn">
+               Delete
+            </button>
+         </div>
+         <!-- More info modal -->
+         <div class="modal-btns options-modal hidden" id="info-modal">
+            <h3 id="p-name">{Pig Name}</h3>
+            <hr />
+            <div class="input-group mb-1">
+               <span class="input-group-text bold-info">Breed</span>
+               <span class="input-group-text" id="p-breed">{Breed}</span>
+            </div>
+            <div class="input-group mb-1">
+               <span class="input-group-text bold-info">Category</span>
+               <span class="input-group-text" id="p-category">{Category}</span>
+            </div>
+            <div class="input-group mb-1">
+               <span class="input-group-text bold-info">Height</span>
+               <span class="input-group-text" id="p-height">{Height}</span>
+            </div>
+            <div class="input-group mb-1">
+               <span class="input-group-text bold-info">Weight</span>
+               <span class="input-group-text" id="p-weight">{Weight}</span>
+            </div>
+            <div class="input-group mb-1">
+               <span class="input-group-text bold-info">Personality</span>
+               <span class="input-group-text" id="p-personality">{Personality}</span>
+            </div>
+            <div class="input-group mb-3">
+               <span class="input-group-text bold-info" id="p-attr-name">{Attribute Name}</span>
+               <span class="input-group-text" id="p-attr-value">{Attribute Value}</span>
+            </div>
+            <button type="button" class="btn btn-primary mx-1" id="close-info-btn">Close</button>
+         </div>
+         <!-- Error Modal -->
+         <div class="modal-btns options-modal hidden" id="error-modal">
+            <h2 class="mb-3">Input Error: try again</h2>
+            <button type="button" class="btn btn-secondary mx-1" id="close-error-modal">
+               Close
+            </button>
+         </div>
+      </div>
+      <script type="module" src="/src/main.ts"></script>
+   </body>
+</html>

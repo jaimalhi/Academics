@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+body {
+   font-family: "Roboto", sans-serif;
+   min-width: 400px;
+   margin: 0;
+   padding: 0;
+}
+
+/* Nav CSS */
+nav {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+
+   border: solid 1px #3a474e;
+   background-color: #3a474e;
+   color: #fff;
+
+   margin: 15px;
+   padding: 0 2rem;
+
+   font-size: 32px;
+}
+
+nav span {
+   color: #ed764d;
+}
+
+/* Hamburger Menu CSS */
+.menu-icon {
+   font-size: 40px;
+   font-weight: 1000;
+   cursor: pointer;
+}
+
+/* Main area */
+.home-page-main {
+   display: flex;
+   justify-content: space-around;
+   align-items: start;
+   margin: 1rem;
+}
+
+.home-page-main section {
+   width: 48vw;
+}
+
+.home-page-main h1 {
+   font-size: 38px;
+}
+
+.home-page-main section article,
+.home-page-main section li {
+   font-size: 20px;
+}
+
+.info article {
+   padding-left: 2rem;
+}
+
+/* Hide/show faculty info */
+.faculty-info {
+   display: none;
+   visibility: hidden;
+   margin-top: 5px;
+}
+
+.faculty-info p {
+   margin-left: 1.5rem;
+}
+
+.links li:hover .faculty-info {
+   display: block;
+   visibility: visible;
+}
+
+/* Global */
+a {
+   text-decoration: none;
+   color: #842521;
+}
+
+a:hover {
+   color: #000;
+}
+
+@media (max-width: 550px) {
+   .home-page-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+   }
+
+   .home-page-main section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+   }
+}

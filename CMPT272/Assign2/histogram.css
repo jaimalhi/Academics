@@ -1,0 +1,161 @@
+body {
+   background-color: #a6192e;
+   display: flex;
+   justify-content: center;
+}
+
+h1 {
+   font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.secTitle {
+   font-family: "Times New Roman", Times, serif;
+   font-weight: 700 !important;
+   color: #a62824;
+   font-size: 20px;
+   margin-bottom: 500px;
+}
+
+table {
+   /* border-collapse: separate; */
+   border-spacing: 30px 10px;
+}
+
+table input {
+   text-align: center;
+   padding: 5px 5px 5px 10px;
+   margin-left: 50px;
+   width: 60px;
+}
+
+/* style all text within .container */
+.container * {
+   font-family: "Times New Roman", Times, serif;
+   font-weight: 600;
+}
+
+.container {
+   justify-content: center;
+   display: grid;
+   background-color: #fff;
+   grid-template-areas:
+      "mainTitle mainTitle"
+      "gradeInput histogram"
+      "gradeInput stats";
+   gap: 15px;
+   padding: 1.5rem;
+   border-radius: 5px;
+}
+
+.mainTitle {
+   grid-area: mainTitle;
+}
+
+.gradeScale {
+   grid-area: gradeInput;
+}
+
+.histogram {
+   grid-area: histogram;
+}
+
+.stats {
+   grid-area: stats;
+   height: 10rem;
+}
+
+.stat-values {
+   font-weight: 400;
+}
+
+.border {
+   background-color: #eaeff1;
+   border-radius: 5px;
+   padding: 10px;
+   width: 25rem;
+}
+
+.tips {
+   color: rgba(0, 0, 0, 0.5);
+   font-size: 15px;
+}
+
+.invisible {
+   display: none;
+   visibility: hidden;
+}
+
+/* Get even cells for display */
+.displayHistogram tr > :nth-child(even) {
+   border: 1px solid #000;
+   border-radius: 5px;
+   padding: 1px 3px 1px 3px;
+   background-color: #a62824;
+   color: #fff;
+   text-align: center;
+}
+
+.displayHistogram tr {
+   display: table;
+   border-spacing: 5px;
+}
+
+.displayHistogram {
+   position: relative;
+}
+
+/* Histogram Elements */
+#A1 {
+   position: relative;
+   left: 0px;
+}
+
+#A2 {
+   position: relative;
+   left: 9px;
+}
+
+#A3 {
+   position: relative;
+   left: 4px;
+}
+
+#B1 {
+   position: relative;
+   left: 1px;
+}
+
+#B2 {
+   position: relative;
+   left: 10px;
+}
+
+#B3 {
+   position: relative;
+   left: 5px;
+}
+
+#C1 {
+   position: relative;
+   left: 1px;
+}
+
+#C2 {
+   position: relative;
+   left: 10px;
+}
+
+#C3 {
+   position: relative;
+   left: 5px;
+}
+
+#D {
+   position: relative;
+   left: 11px;
+}
+
+#F {
+   position: relative;
+   left: 13px;
+}

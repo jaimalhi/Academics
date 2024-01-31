@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <link rel="stylesheet" href="histogram.css" />
+      <title>A1 Histogram</title>
+   </head>
+   <body onload="init()">
+      <div class="container">
+         <div class="mainTitle">
+            <h1>Histogram Generator</h1>
+            <input id="fileInput" type="file" name="file" title="Choose CSV file" />
+         </div>
+         <div class="gradeScale border">
+            <span class="secTitle">Lower bounds</span>
+            <table>
+               <tr>
+                  <td>Max</td>
+                  <td><input name="max" type="number" value="100.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>A+</td>
+                  <td><input name="A+" type="number" value="95.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>A</td>
+                  <td><input name="A" type="number" value="90.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>A-</td>
+                  <td><input name="A-" type="number" value="85.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>B+</td>
+                  <td><input name="B+" type="number" value="80.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>B</td>
+                  <td><input name="B" type="number" value="75.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>B-</td>
+                  <td><input name="B-" type="number" value="70.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>C+</td>
+                  <td><input name="C+" type="number" value="65.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>C</td>
+                  <td><input name="C" type="number" value="60.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>C-</td>
+                  <td><input name="C-" type="number" value="55.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>D</td>
+                  <td><input name="D" type="number" value="50.00" class="gradeNum" /></td>
+               </tr>
+               <tr>
+                  <td>F</td>
+                  <td><input name="F" type="number" value="0.00" class="gradeNum" /></td>
+               </tr>
+            </table>
+            <p class="tips invisible" id="helperText">
+               Invalid input! Enter a number between 0 and 100 with no overlap
+            </p>
+         </div>
+         <div class="histogram border">
+            <span class="secTitle">Histogram</span>
+            <table class="displayHistogram">
+               <tr>
+                  <td>A+</td>
+                  <td id="A1">0</td>
+               </tr>
+               <tr>
+                  <td>A</td>
+                  <td id="A2">0</td>
+               </tr>
+               <tr>
+                  <td>A-</td>
+                  <td id="A3">0</td>
+               </tr>
+               <tr>
+                  <td>B+</td>
+                  <td id="B1">0</td>
+               </tr>
+               <tr>
+                  <td>B</td>
+                  <td id="B2">0</td>
+               </tr>
+               <tr>
+                  <td>B-</td>
+                  <td id="B3">0</td>
+               </tr>
+               <tr>
+                  <td>C+</td>
+                  <td id="C1">0</td>
+               </tr>
+               <tr>
+                  <td>C</td>
+                  <td id="C2">0</td>
+               </tr>
+               <tr>
+                  <td>C-</td>
+                  <td id="C3">0</td>
+               </tr>
+               <tr>
+                  <td>D</td>
+                  <td id="D">0</td>
+               </tr>
+               <tr>
+                  <td>F</td>
+                  <td id="F">0</td>
+               </tr>
+            </table>
+         </div>
+         <div class="stats border">
+            <span class="secTitle">Stats</span>
+            <table>
+               <tr>
+                  <td>Highest</td>
+                  <td id="highest" class="stat-values">...</td>
+               </tr>
+               <tr>
+                  <td>Lowest</td>
+                  <td id="lowest" class="stat-values">...</td>
+               </tr>
+               <tr>
+                  <td>Mean</td>
+                  <td id="mean" class="stat-values">...</td>
+               </tr>
+               <tr>
+                  <td>Meidan</td>
+                  <td id="median" class="stat-values">...</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+      <script type="text/javascript" src="calculate.js"></script>
+   </body>
+</html>

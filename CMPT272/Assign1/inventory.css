@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+body {
+   font-family: "Roboto", sans-serif;
+   min-width: 400px;
+   margin: 0;
+   padding: 0;
+}
+
+footer {
+   margin: 1rem;
+}
+
+ul {
+   list-style-type: none;
+   padding: 0;
+
+   /* border: 1px solid #000; */
+}
+
+main {
+   margin: 1rem;
+}
+
+/* Card styling */
+.card {
+   border: 1px solid #bbb;
+   border-radius: 5px;
+   margin: 0 10px 10px 10px;
+   text-align: center;
+   width: calc(25% - 25px); /* Four cards per row by default with spacing */
+   display: inline-block;
+   box-sizing: border-box;
+}
+
+.card img {
+   max-width: 100%;
+   height: auto;
+}
+
+.card p {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   margin: 10px 0;
+   font-size: 20px;
+   height: 2rem;
+}
+
+.card button {
+   visibility: hidden;
+   opacity: 0;
+
+   padding: 10px 15px;
+   margin-bottom: 15px;
+   font-size: 15px;
+   font-weight: 600;
+
+   color: #fff;
+   background-color: #ed764d;
+
+   border: none;
+   border-radius: 7px;
+
+   transition: opacity 0.7s ease-in-out;
+}
+
+.card button:hover {
+   color: #fff;
+   background-color: #f3a68d;
+}
+
+.card:hover {
+   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover button {
+   visibility: visible;
+   opacity: 0.8;
+}
+
+/* when window width <= 770px */
+@media (max-width: 770px) {
+   .card {
+      width: calc(50% - 25px);
+   }
+}
+
+/* when window width <= 480px */
+@media (max-width: 480px) {
+   .card {
+      width: calc(100% - 25px);
+   }
+}
