@@ -6,6 +6,7 @@ type Recipe = {
 	name: string;
 	ingredients: string[];
 	instructions: string;
+	createdAt: Date;
 };
 
 // Create a writable store that will be saved to local storage

@@ -21,6 +21,7 @@
 			...recipes,
 			{
 				id: crypto.randomUUID(),
+				createdAt: new Date(),
 				name,
 				ingredients,
 				instructions
