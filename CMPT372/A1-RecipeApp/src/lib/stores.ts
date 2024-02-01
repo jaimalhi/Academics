@@ -2,10 +2,10 @@ import { localStorageStore } from '@skeletonlabs/skeleton';
 import type { Writable } from 'svelte/store';
 
 type Recipe = {
-	id: number;
+	id: string;
 	name: string;
 	ingredients: string[];
-	insturctions: string[];
+	instructions: string;
 };
 
 // Create a writable store that will be saved to local storage
