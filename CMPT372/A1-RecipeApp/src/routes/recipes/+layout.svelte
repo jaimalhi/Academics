@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>Recipe App</title>
+	<title>Recipe Safe</title>
 	<meta name="description" content="Simple recipe app created with sveltekit & skeleton" />
 </svelte:head>
 
@@ -30,7 +30,7 @@
 					<i class="fa-solid fa-house text-4xl"></i>
 				</a>
 			</svelte:fragment>
-			<h1 class="text-4xl">Recipe App</h1>
+			<h1 class="text-4xl">Recipe Safe</h1>
 			<svelte:fragment slot="trail">
 				<button
 					on:click={() => {

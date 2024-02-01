@@ -7,6 +7,9 @@
 	let ingredients: string[] = ['water'];
 	let instructions: string;
 
+	// control disabled state of buttons
+	$: createRecipeBtn = name && ingredients.length > 0 && instructions ? true : false;
+
 	const toastStore = getToastStore();
 	const t: ToastSettings = {
 		message: 'Recipe added successfully!',
@@ -31,8 +34,11 @@
 		goto('/recipes');
 	}
 
-	// control disabled state of createRecipe button
-	$: createRecipeBtn = name && ingredients.length > 0 && instructions ? true : false;
+	function resetRecipe() {
+		name = '';
+		ingredients = [];
+		instructions = '';
+	}
 </script>
 
 <div class="flex flex-col gap-4 bg-surface-700 p-5 rounded-lg">
@@ -73,11 +79,20 @@
 				placeholder="Step-by-Step Recipe instructions..."
 			/>
 		</label>
-		<button
-			on:click={createRecipe}
-			disabled={!createRecipeBtn}
-			type="button"
-			class="btn variant-filled hover:bg-primary-500 hover:text-white">Create Recipe</button
-		>
+		<section class="flex justify-around">
+			<button
+				on:click={resetRecipe}
+				type="button"
+				class="btn variant-filled hover:bg-error-500 hover:text-white"
+			>
+				Reset Recipe
+			</button>
+			<button
+				on:click={createRecipe}
+				disabled={!createRecipeBtn}
+				type="button"
+				class="btn variant-filled hover:bg-primary-500 hover:text-white">Create Recipe</button
+			>
+		</section>
 	</form>
 </div>
