@@ -1,7 +1,7 @@
 import { localStorageStore } from '@skeletonlabs/skeleton';
 import type { Writable } from 'svelte/store';
 
-type Recipe = {
+export type Recipe = {
 	id: string;
 	name: string;
 	ingredients: string[];

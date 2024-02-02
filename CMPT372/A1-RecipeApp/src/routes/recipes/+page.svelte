@@ -9,8 +9,7 @@
 	const toastStore = getToastStore();
 
 	function goToRecipe(recipeId: string) {
-		// goto(`/recipes/${recipeId}`);
-		console.log(recipeId);
+		goto(`/recipes/${recipeId}`);
 	}
 
 	function deleteRecipe(recipeId: string) {
