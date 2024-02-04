@@ -2,6 +2,7 @@
 	import { InputChip, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
 	import { recipeStore } from '$lib/stores';
 	import { goto } from '$app/navigation';
+	import { v4 as uuidv4 } from 'uuid';
 
 	let name: string;
 	let ingredients: string[] = ['water'];
@@ -17,6 +18,14 @@
 	};
 
 	function createRecipe() {
+		// gerneate random id based on browser compatibility
+		let randomId = uuidv4();
+		if (crypto.randomUUID()) {
+			randomId = crypto.randomUUID();
+		} else {
+			randomId = uuidv4();
+		}
+
 		recipeStore.update((recipes) => [
 			...recipes,
 			{
