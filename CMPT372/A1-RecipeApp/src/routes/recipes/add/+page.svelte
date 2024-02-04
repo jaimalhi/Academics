@@ -18,18 +18,10 @@
 	};
 
 	function createRecipe() {
-		// gerneate random id based on browser compatibility
-		let randomId = uuidv4();
-		if (crypto.randomUUID()) {
-			randomId = crypto.randomUUID();
-		} else {
-			randomId = uuidv4();
-		}
-
 		recipeStore.update((recipes) => [
 			...recipes,
 			{
-				id: crypto.randomUUID(),
+				id: uuidv4(),
 				createdAt: new Date(),
 				name,
 				ingredients,
