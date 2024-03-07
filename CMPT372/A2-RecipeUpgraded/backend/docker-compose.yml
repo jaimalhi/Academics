@@ -18,8 +18,3 @@ services:
          POSTGRES_USER: "postgres"
          # Sets the environment variable POSTGRES_PASSWORD to "root".
          POSTGRES_PASSWORD: "root"
-# ===================================================================
-# How to run:
-# 1. docker-compose up --build
-# 2. psql -h localhost -U postgres -p 4444
-# 3. docker-compose down
