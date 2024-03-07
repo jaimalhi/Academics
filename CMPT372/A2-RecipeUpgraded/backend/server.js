@@ -39,6 +39,7 @@ app.get("/api/recipes/:id", async (req, res) => {
       });
 });
 
+// Add a recipe
 app.post("/api/add", async (req, res) => {
    let recipe = {
       title: req.body.title,
@@ -56,6 +57,7 @@ app.post("/api/add", async (req, res) => {
       });
 });
 
+// Delete a recipe by id
 app.delete("/api/delete/:id", async (req, res) => {
    let id = req.params.id;
    db.deleteRecipe(id)
@@ -68,7 +70,7 @@ app.delete("/api/delete/:id", async (req, res) => {
       });
 });
 
-// TODO: route to update a recipe
+// Update a recipe by id
 app.put("/api/update/:id", async (req, res) => {
    let id = req.params.id;
    let recipe = {
