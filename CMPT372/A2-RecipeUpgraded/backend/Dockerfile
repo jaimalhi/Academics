@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # Specify the command to run when the container starts
-CMD [ "node", "index.js" ]
+CMD [ "node", "server.js" ]
