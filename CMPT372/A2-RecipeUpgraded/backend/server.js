@@ -104,9 +104,9 @@ async function initDBAndStartServer() {
       const recipes = await db.getRecipes();
 
       app.listen(port, "0.0.0.0", () => {
-         console.log("=============== Starting Server ===============");
+         console.log("================== Starting Server ==================");
          console.log(`App listening at http://localhost:${port} with ${recipes.length} recipes`);
-         console.log("===============================================");
+         console.log("=====================================================");
       });
    } catch (err) {
       console.error("Failed to initialize the database or start the server:", err);
