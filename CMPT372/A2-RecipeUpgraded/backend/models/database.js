@@ -28,6 +28,14 @@ async function ingredientToId(ingredients) {
    return ingredientIds;
 }
 
+async function checkIfRecipeExists(id) {
+   // Ensure recipe exists
+   const existingRecipe = await getRecipeById(id);
+   if (!existingRecipe) {
+      throw new Error(`Recipe with ID ${id} does not exist`);
+   }
+}
+
 async function init() {
    const createIngredientsTable =
       "CREATE TABLE IF NOT EXISTS ingredients (iid SERIAL PRIMARY KEY, ingredient VARCHAR(255))";
@@ -92,12 +100,7 @@ async function addRecipe(recipe, ingredients) {
 
 // PARAMETERS: id (number), recipe (object), ingredients (array of strings)
 async function updateRecipe(id, recipe, ingredients) {
-   // Ensure recipe exists
-   const existingRecipe = await getRecipeById(id);
-   if (!existingRecipe) {
-      throw new Error(`Recipe with ID ${id} does not exist`);
-   }
-
+   await checkIfRecipeExists(id);
    const ingredientIds = await ingredientToId(ingredients);
 
    // Update existing recipe
@@ -117,6 +120,7 @@ async function updateRecipe(id, recipe, ingredients) {
 
 // PARAMETERS: id (number)
 async function deleteRecipe(id) {
+   await checkIfRecipeExists(id);
    await pool.query("DELETE FROM recipes WHERE rid = $1", [id]);
 }
 

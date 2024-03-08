@@ -3,6 +3,7 @@ const express = require("express");
 let app = express();
 // node modules
 let path = require("path");
+let cors = require("cors");
 let db = require("./models/database");
 
 const port = 8080;
@@ -10,6 +11,7 @@ const port = 8080;
 // parsing body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // static files
 app.use("/", express.static(path.join(__dirname, "./static"), { index: ["home.html"] }));
