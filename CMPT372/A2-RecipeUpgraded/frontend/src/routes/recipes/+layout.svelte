@@ -70,7 +70,7 @@
 			<svelte:fragment slot="trail">
 				<a
 					class="anchor"
-					href="https://github.com/jaimalhi/Academics/tree/main/CMPT372/A1-RecipeApp">GitHub</a
+					href="https://github.com/jaimalhi/Academics/tree/main/CMPT372/A2-RecipeUpgraded">GitHub</a
 				>
 			</svelte:fragment>
 		</AppBar>
