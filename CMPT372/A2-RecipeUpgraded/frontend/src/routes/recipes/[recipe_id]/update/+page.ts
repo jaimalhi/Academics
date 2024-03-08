@@ -14,10 +14,10 @@ export const load: PageLoad = async ({ params }) => {
 
 	return {
 		recipe: {
+			rid: currentRecipe.rid,
 			title: currentRecipe.title,
 			ingredients: currentRecipe.ingredients,
-			instructions: currentRecipe.instructions,
-			time_modified: currentRecipe.time_modified
+			instructions: currentRecipe.instructions
 		}
 	};
 };

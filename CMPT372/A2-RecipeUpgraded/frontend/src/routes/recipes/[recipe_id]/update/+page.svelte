@@ -1,43 +1,125 @@
 <script lang="ts">
-	import { formatDate } from '$lib/utils/dateFormatter';
 	import type { PageData } from './$types';
 	// get data from locale storage using +page.ts via load function
 	export let data: PageData;
+
+	import { InputChip, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { goto } from '$app/navigation';
+
+	let title: string;
+	let ingredients: string[];
+	let instructions: string;
+	let rid: number;
+	// ensure recipe is not undefined
+	if (data.recipe) {
+		title = data.recipe.title;
+		ingredients = data.recipe.ingredients;
+		instructions = data.recipe.instructions;
+		rid = data.recipe.rid;
+	}
+
+	// control disabled state of buttons
+	$: createRecipeBtn = title && ingredients.length > 0 && instructions ? true : false;
+
+	const toastStore = getToastStore();
+	const t: ToastSettings = {
+		message: 'Recipe added successfully!',
+		background: 'variant-filled-success'
+	};
+
+	async function updateRecipe() {
+		const recipe = {
+			title,
+			instructions,
+			ingredients,
+			time_modified: new Date()
+		};
+
+		try {
+			await fetch(`http://localhost:8080/api/update/${rid}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(recipe)
+			});
+		} catch (error) {
+			console.error('Error:', error);
+		}
+		// reset form after adding recipe
+		title = '';
+		ingredients = [];
+		instructions = '';
+		toastStore.trigger(t);
+		goto('/recipes');
+	}
+
+	function resetRecipe() {
+		title = '';
+		ingredients = [];
+		instructions = '';
+	}
 </script>
 
-<!-- TODO: replace this content with form similar to add -->
 <div
 	class="container mx-auto flex flex-col flex-grow min-h-80 border-2 bg-surface-700 rounded-xl p-4"
 >
 	{#if data.recipe}
-		WORK IN PROGRESS
-		<header class="header">
-			<h1 class="text-4xl mb-3">
-				{data.recipe.title}
-			</h1>
-			<span class="opacity-50">
-				{formatDate(new Date(data.recipe.time_modified))}
-			</span>
-		</header>
-		<hr class="!border-t-4 !border-primary-500 opacity-70" />
-		<section class="flex flex-col my-3">
-			<span class="text-xl underline">Ingredients</span>
-			<ol>
-				{#each data.recipe.ingredients as ingredient, index (ingredient)}
-					<li class="opacity-80">
-						<span>{index + 1}.</span>
-						<span>{ingredient}</span>
-					</li>
-				{/each}
-			</ol>
-		</section>
-		<hr class="!border-t-2 !border-primary-500 opacity-50" />
-		<section class="flex flex-col my-2">
-			<span class="text-xl underline">Instructions</span>
-			<span class="first-letter:uppercase">
-				{data.recipe.instructions}
-			</span>
-		</section>
+		<div class="flex flex-col gap-4 bg-surface-700 p-5 rounded-lg">
+			<h1 class="text-xl">Update Recipe</h1>
+			<hr class="!border-t-4" />
+			<form method="POST">
+				<!-- title -->
+				<label class="label mb-3" for="recipe-title">
+					<span>Title</span>
+					<input
+						bind:value={title}
+						class="input rounded-lg"
+						id="recipe-title"
+						type="text"
+						placeholder="Recipe Title..."
+						name="title"
+					/>
+				</label>
+				<!-- Ingredients -->
+				<label class="label mb-3" for="ingredient-list">
+					<span>Ingredients</span>
+					<InputChip
+						bind:value={ingredients}
+						name="chips"
+						id="ingredient-list"
+						placeholder="Enter ingredient one at a time..."
+					/>
+				</label>
+				<!-- Instructions -->
+				<label class="label mb-3" for="instructions">
+					<span>Instructions</span>
+					<textarea
+						bind:value={instructions}
+						class="textarea rounded-lg"
+						id="instructions"
+						name="instructions"
+						rows="4"
+						placeholder="Step-by-Step Recipe instructions..."
+					/>
+				</label>
+				<section class="flex justify-around">
+					<button
+						on:click={resetRecipe}
+						type="button"
+						class="btn variant-filled hover:bg-error-500 hover:text-white"
+					>
+						Reset Recipe
+					</button>
+					<button
+						on:click={updateRecipe}
+						disabled={!createRecipeBtn}
+						type="button"
+						class="btn variant-filled hover:bg-primary-500 hover:text-white">Update Recipe</button
+					>
+				</section>
+			</form>
+		</div>
 	{:else}
 		<h1 class="text-5xl py-5">Recipe not found...</h1>
 		<a class="anchor" href="/recipes">Return Home</a>
