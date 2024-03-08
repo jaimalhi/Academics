@@ -1,4 +1,6 @@
-const { Pool } = require("pg");
+// const { Pool } = require("pg");
+import pkg from "pg";
+const { Pool } = pkg;
 var pool = new Pool({
    user: "postgres",
    host: "db",
@@ -36,7 +38,8 @@ async function checkIfRecipeExists(id) {
    }
 }
 
-async function init() {
+//* ======================= EXPORTED =======================
+export async function init() {
    const createIngredientsTable =
       "CREATE TABLE IF NOT EXISTS ingredients (iid SERIAL PRIMARY KEY, ingredient VARCHAR(255))";
 
@@ -47,8 +50,7 @@ async function init() {
    await pool.query(createRecipeTable);
 }
 
-//* ======================= ENDPOINTS =======================
-async function getRecipes() {
+export async function getRecipes() {
    const res = await pool.query("SELECT * FROM recipes");
    const recipes = res.rows;
 
@@ -65,7 +67,7 @@ async function getRecipes() {
 }
 
 // PARAMETERS: id (number)
-async function getRecipeById(id) {
+export async function getRecipeById(id) {
    const res = await pool.query("SELECT * FROM recipes WHERE rid = $1", [id]);
    const recipe = res.rows[0];
 
@@ -82,7 +84,7 @@ async function getRecipeById(id) {
 }
 
 // PARAMETERS: recipe (object), ingredients (array of strings)
-async function addRecipe(recipe, ingredients) {
+export async function addRecipe(recipe, ingredients) {
    const ingredientIds = await ingredientToId(ingredients);
 
    // Add the recipe to the recipes table
@@ -99,7 +101,7 @@ async function addRecipe(recipe, ingredients) {
 }
 
 // PARAMETERS: id (number), recipe (object), ingredients (array of strings)
-async function updateRecipe(id, recipe, ingredients) {
+export async function updateRecipe(id, recipe, ingredients) {
    await checkIfRecipeExists(id);
    const ingredientIds = await ingredientToId(ingredients);
 
@@ -119,16 +121,16 @@ async function updateRecipe(id, recipe, ingredients) {
 }
 
 // PARAMETERS: id (number)
-async function deleteRecipe(id) {
+export async function deleteRecipe(id) {
    await checkIfRecipeExists(id);
    await pool.query("DELETE FROM recipes WHERE rid = $1", [id]);
 }
 
-module.exports = {
-   init,
-   getRecipes,
-   getRecipeById,
-   addRecipe,
-   updateRecipe,
-   deleteRecipe,
-};
+// module.exports = {
+//    init,
+//    getRecipes,
+//    getRecipeById,
+//    addRecipe,
+//    updateRecipe,
+//    deleteRecipe,
+// };

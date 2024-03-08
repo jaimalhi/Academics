@@ -1,20 +1,23 @@
-// npm modules
-const express = require("express");
-let app = express();
-// node modules
-let path = require("path");
-let cors = require("cors");
-let db = require("./models/database");
+// Using CommonJS syntax
+// const express = require("express");
+// const { handler } = require("./build/index.js");
+// let path = require("path");
+// let cors = require("cors");
+// let db = require("./models/database");
 
+// Importing modules using ES6 syntax
+import express from "express";
+import { handler } from "./build/handler.js";
+import path from "path";
+import cors from "cors";
+import * as db from "./models/database.js";
+
+const app = express();
 const port = 8080;
 
-// parsing body
-app.use(express.json());
+app.use(express.json()); // parsing body
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-
-// static files
-app.use("/", express.static(path.join(__dirname, "./static"), { index: ["home.html"] }));
 
 // Get all recipes
 app.get("/api/recipes", async (req, res) => {
@@ -91,22 +94,23 @@ app.put("/api/update/:id", async (req, res) => {
       });
 });
 
-// Initalize the database
-async function InitDB() {
-   await db.init();
-   const recipes = await db.getRecipes();
-   console.log("========== Recipes ==========");
-   console.log(recipes);
-   console.log("=============================");
+// Use the SvelteKit handler to handle all other requests
+app.use(handler);
+
+// Initialize the database and start the server
+async function initDBAndStartServer() {
+   try {
+      await db.init();
+      const recipes = await db.getRecipes();
+
+      app.listen(port, "0.0.0.0", () => {
+         console.log("=============== Starting Server ===============");
+         console.log(`App listening at http://localhost:${port} with ${recipes.length} recipes`);
+         console.log("===============================================");
+      });
+   } catch (err) {
+      console.error("Failed to initialize the database or start the server:", err);
+   }
 }
 
-InitDB()
-   .then(() => {
-      app.listen(port, "0.0.0.0", () => {
-         console.log(`App listening at http://localhost:${port}`);
-         console.log(`App listening at http://0.0.0.0:${port}`);
-      });
-   })
-   .catch((err) => {
-      console.log(err);
-   });
+initDBAndStartServer();
