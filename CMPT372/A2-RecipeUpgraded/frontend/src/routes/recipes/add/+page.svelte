@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { InputChip, getToastStore, type ToastSettings } from '@skeletonlabs/skeleton';
-	import { recipeStore } from '$lib/stores';
 	import { goto } from '$app/navigation';
-	import { v4 as uuidv4 } from 'uuid';
 
-	let name: string;
+	// form state
+	let title: string;
 	let ingredients: string[] = ['water'];
 	let instructions: string;
 
 	// control disabled state of buttons
-	$: createRecipeBtn = name && ingredients.length > 0 && instructions ? true : false;
+	$: createRecipeBtn = title && ingredients.length > 0 && instructions ? true : false;
 
 	const toastStore = getToastStore();
 	const t: ToastSettings = {
@@ -17,19 +16,27 @@
 		background: 'variant-filled-success'
 	};
 
-	function createRecipe() {
-		recipeStore.update((recipes) => [
-			...recipes,
-			{
-				id: uuidv4(),
-				createdAt: new Date(),
-				name,
-				ingredients,
-				instructions
-			}
-		]);
+	async function createRecipe() {
+		const recipe = {
+			title,
+			instructions,
+			ingredients,
+			time_modified: new Date()
+		};
+
+		try {
+			await fetch('http://localhost:8080/api/add', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(recipe)
+			});
+		} catch (error) {
+			console.error('Error:', error);
+		}
 		// reset form after adding recipe
-		name = '';
+		title = '';
 		ingredients = [];
 		instructions = '';
 		toastStore.trigger(t);
@@ -37,7 +44,7 @@
 	}
 
 	function resetRecipe() {
-		name = '';
+		title = '';
 		ingredients = [];
 		instructions = '';
 	}
@@ -47,16 +54,16 @@
 	<h1 class="text-xl">New Recipe</h1>
 	<hr class="!border-t-4" />
 	<form method="POST">
-		<!-- Name -->
-		<label class="label mb-3" for="recipe-name">
-			<span>Name</span>
+		<!-- title -->
+		<label class="label mb-3" for="recipe-title">
+			<span>Title</span>
 			<input
-				bind:value={name}
+				bind:value={title}
 				class="input rounded-lg"
-				id="recipe-name"
+				id="recipe-title"
 				type="text"
-				placeholder="Recipe Name..."
-				name="name"
+				placeholder="Recipe Title..."
+				name="title"
 			/>
 		</label>
 		<!-- Ingredients -->

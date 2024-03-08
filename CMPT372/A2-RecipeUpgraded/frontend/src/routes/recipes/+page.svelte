@@ -76,6 +76,10 @@
 		goto(`/recipes/${recipeId}`);
 	}
 
+	function updateRecipeWithRid(recipeId: number) {
+		goto(`/recipes/${recipeId}/update`);
+	}
+
 	// load recipes on mount/initial render
 	onMount(async () => {
 		await loadRecipes();
@@ -104,7 +108,7 @@
 {:else}
 	<div class="flex flex-wrap gap-8">
 		{#each recipes as recipe}
-			<section class="card card-hover overflow-hidden w-60 flex-grow">
+			<section class="card card-hover overflow-hidden w-auto flex-grow">
 				<header class="card-header">
 					<h3 class="h3 underline underline-offset-2">{recipe.title}</h3>
 					<span class="opacity-50">
@@ -138,6 +142,14 @@
 						type="button"
 						class="btn w-1/2 mx-2 variant-filled hover:bg-error-500 hover:text-white"
 						>Delete Recipe</button
+					>
+					<button
+						on:click={() => {
+							updateRecipeWithRid(recipe.rid);
+						}}
+						type="button"
+						class="btn w-1/2 mx-2 variant-filled hover:bg-secondary-500 hover:text-white"
+						>Update Recipe</button
 					>
 					<button
 						on:click={() => {
