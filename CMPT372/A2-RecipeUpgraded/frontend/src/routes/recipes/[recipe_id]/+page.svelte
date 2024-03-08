@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { formatDate } from '$lib/utils/dateFormatter';
 	import type { PageData } from './$types';
 	// get data from locale storage using +page.ts via load function
 	export let data: PageData;
@@ -7,13 +8,15 @@
 <div
 	class="container mx-auto flex flex-col flex-grow min-h-80 border-2 bg-surface-700 rounded-xl p-4"
 >
-	{#if !data.recipe}
-		<h1 class="text-5xl py-5">Recipe not found...</h1>
-		<a class="anchor" href="/recipes">Return Home</a>
-	{:else}
-		<h1 class="text-4xl mb-3">
-			{data.recipe.name}
-		</h1>
+	{#if data.recipe}
+		<header class="header">
+			<h1 class="text-4xl mb-3">
+				{data.recipe.title}
+			</h1>
+			<span class="opacity-50">
+				{formatDate(new Date(data.recipe.time_modified))}
+			</span>
+		</header>
 		<hr class="!border-t-4 !border-primary-500 opacity-70" />
 		<section class="flex flex-col my-3">
 			<span class="text-xl underline">Ingredients</span>
@@ -33,5 +36,8 @@
 				{data.recipe.instructions}
 			</span>
 		</section>
+	{:else}
+		<h1 class="text-5xl py-5">Recipe not found...</h1>
+		<a class="anchor" href="/recipes">Return Home</a>
 	{/if}
 </div>
