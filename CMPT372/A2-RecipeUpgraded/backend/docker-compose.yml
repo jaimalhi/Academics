@@ -1,20 +1,23 @@
-version: "3.9" # Specifies the version of the Docker Compose file format being used.
+version: "3.9"
 
 services:
-   server:
-      # Specifies the build context for the server service, which is the current directory.
-      build: .
-      ports:
-         # Maps port 8080 of the host machine to port 8080 of the server container.
-         - "8080:8080"
    db:
-      # Specifies the Docker image to be used for the db service, which is "postgres".
       image: "postgres"
       ports:
-         # Maps port 4444 of the host machine to port 5432 of the db container.
          - "4444:5432"
       environment:
-         # Sets the environment variable POSTGRES_USER to "postgres".
          POSTGRES_USER: "postgres"
-         # Sets the environment variable POSTGRES_PASSWORD to "root".
          POSTGRES_PASSWORD: "root"
+      healthcheck:
+         test: ["CMD-SHELL", "pg_isready -U postgres"]
+         interval: 10s
+         timeout: 5s
+         retries: 5
+
+   server:
+      build: .
+      ports:
+         - "8080:8080"
+      depends_on:
+         db:
+            condition: service_healthy
