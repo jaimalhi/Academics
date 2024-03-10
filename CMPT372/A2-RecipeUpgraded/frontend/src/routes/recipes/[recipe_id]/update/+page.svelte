@@ -36,7 +36,7 @@
 		};
 
 		try {
-			await fetch(`http://localhost:8080/api/update/${rid}`, {
+			await fetch(`http://localhost:3000/api/update/${rid}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'

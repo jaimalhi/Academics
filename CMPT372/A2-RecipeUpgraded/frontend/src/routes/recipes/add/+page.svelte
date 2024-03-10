@@ -25,7 +25,7 @@
 		};
 
 		try {
-			await fetch('http://localhost:8080/api/add', {
+			await fetch('http://localhost:3000/api/add', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

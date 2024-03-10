@@ -24,7 +24,7 @@ export const load: PageLoad = async ({ params }) => {
 
 async function loadRecipe(recipeId: string) {
 	try {
-		const res = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
+		const res = await fetch(`http://localhost:3000/api/recipes/${recipeId}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'

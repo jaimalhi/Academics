@@ -16,7 +16,7 @@
 
 	async function loadRecipes() {
 		try {
-			const res = await fetch('http://localhost:8080/api/recipes', {
+			const res = await fetch('http://localhost:3000/api/recipes', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'
@@ -34,7 +34,7 @@
 	async function deleteRecipeById(recipeId: number) {
 		try {
 			// delete recipe by id from server
-			await fetch(`http://localhost:8080/api/delete/${recipeId}`, {
+			await fetch(`http://localhost:3000/api/delete/${recipeId}`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json'
