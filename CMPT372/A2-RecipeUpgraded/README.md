@@ -6,7 +6,8 @@
 
 1. ensure the `docker-compose.yml` file is located in the current directory
 2. run `docker pull jaimalhi/cmpt372-a2`
-3. view application on http://localhost:3000/
+3. run `docker-compose up`
+4. view application on http://localhost:3000/
 
 ### Technologies
 
