@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+   db:
+      image: "postgres"
+      ports:
+         - "4444:5432"
+      environment:
+         POSTGRES_USER: "postgres"
+         POSTGRES_PASSWORD: "root"
+      healthcheck:
+         test: ["CMD-SHELL", "pg_isready -U postgres"]
+         interval: 10s
+         timeout: 5s
+         retries: 5
+
+   server:
+      image: jaimalhi/cmpt372-a2 # Use the image from Docker Hub
+      ports:
+         - "3000:3000"
+      depends_on:
+         db:
+            condition: service_healthy
