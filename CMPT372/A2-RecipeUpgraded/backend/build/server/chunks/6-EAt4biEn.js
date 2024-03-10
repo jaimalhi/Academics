@@ -16,7 +16,7 @@ const load = async ({ params }) => {
 };
 async function loadRecipe(recipeId) {
   try {
-    const res = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
+    const res = await fetch(`http://localhost:3000/api/recipes/${recipeId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -39,9 +39,9 @@ const index = 6;
 let component_cache;
 const component = async () => component_cache ??= (await import('./_page.svelte-ON5xf8xV.js')).default;
 const universal_id = "src/routes/recipes/[recipe_id]/+page.ts";
-const imports = ["_app/immutable/nodes/6.fRCvIHHd.js","_app/immutable/chunks/scheduler.OWaxIzIJ.js","_app/immutable/chunks/each.smOdYV4G.js","_app/immutable/chunks/index.3LzlWLC8.js","_app/immutable/chunks/dateFormatter.JrucCzqQ.js"];
+const imports = ["_app/immutable/nodes/6.3jvgvdpV.js","_app/immutable/chunks/scheduler.OWaxIzIJ.js","_app/immutable/chunks/each.smOdYV4G.js","_app/immutable/chunks/index.3LzlWLC8.js","_app/immutable/chunks/dateFormatter.JrucCzqQ.js"];
 const stylesheets = [];
 const fonts = [];
 
 export { component, fonts, imports, index, stylesheets, _page_ts as universal, universal_id };
-//# sourceMappingURL=6-INCchweE.js.map
+//# sourceMappingURL=6-EAt4biEn.js.map

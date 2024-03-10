@@ -16,7 +16,7 @@ const load = async ({ params }) => {
 };
 async function loadRecipe(recipeId) {
   try {
-    const res = await fetch(`http://localhost:8080/api/recipes/${recipeId}`, {
+    const res = await fetch(`http://localhost:3000/api/recipes/${recipeId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
@@ -39,9 +39,9 @@ const index = 7;
 let component_cache;
 const component = async () => component_cache ??= (await import('./_page.svelte-HeWzWlbt.js')).default;
 const universal_id = "src/routes/recipes/[recipe_id]/update/+page.ts";
-const imports = ["_app/immutable/nodes/7.hNRf5SJ-.js","_app/immutable/chunks/scheduler.OWaxIzIJ.js","_app/immutable/chunks/index.3LzlWLC8.js","_app/immutable/chunks/ProgressBar.svelte_svelte_type_style_lang.aOM-mGY2.js","_app/immutable/chunks/entry.1-0VwD_A.js","_app/immutable/chunks/control.pJ1mnnAb.js","_app/immutable/chunks/InputChip.XgYt53mT.js","_app/immutable/chunks/index.XdmiYZQk.js","_app/immutable/chunks/each.smOdYV4G.js"];
+const imports = ["_app/immutable/nodes/7.n9rZsUS8.js","_app/immutable/chunks/scheduler.OWaxIzIJ.js","_app/immutable/chunks/index.3LzlWLC8.js","_app/immutable/chunks/ProgressBar.svelte_svelte_type_style_lang.Ov6B9o8A.js","_app/immutable/chunks/entry.Gzexlnjv.js","_app/immutable/chunks/control.pJ1mnnAb.js","_app/immutable/chunks/InputChip.50wspIVn.js","_app/immutable/chunks/index.XdmiYZQk.js","_app/immutable/chunks/each.smOdYV4G.js"];
 const stylesheets = ["_app/immutable/assets/ProgressBar.oq5aOWfL.css"];
 const fonts = [];
 
 export { component, fonts, imports, index, stylesheets, _page_ts as universal, universal_id };
-//# sourceMappingURL=7-fB--rAp0.js.map
+//# sourceMappingURL=7-tfG1XrdY.js.map

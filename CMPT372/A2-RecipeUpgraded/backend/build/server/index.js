@@ -140,7 +140,7 @@ const options = {
     app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en" class="dark">\n	<head>\n		<meta charset="utf-8" />\n		<script src="https://kit.fontawesome.com/4b339993c3.js" crossorigin="anonymous"><\/script>\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\n		<meta name="viewport" content="width=device-width" />\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover" data-theme="skeleton">\n		<div style="display: contents" class="h-full overflow-hidden">' + body + "</div>\n	</body>\n</html>\n",
     error: ({ status, message }) => '<!-- Absolute fallback for errors -->\r\n<!doctype html>\r\n<html lang="en">\r\n	<head>\r\n		<meta charset="utf-8" />\r\n		<title>' + message + "</title>\r\n	</head>\r\n	<body>\r\n		<h1>My custom error page</h1>\r\n		<p>Status: " + status + "</p>\r\n		<p>Message: " + message + "</p>\r\n	</body>\r\n</html>\r\n"
   },
-  version_hash: "1wilj9z"
+  version_hash: "1d4bigm"
 };
 async function get_hooks() {
   return {};

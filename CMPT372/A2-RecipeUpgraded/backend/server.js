@@ -13,7 +13,7 @@ import cors from "cors";
 import * as db from "./models/database.js";
 
 const app = express();
-const port = 8080;
+const port = 3000;
 
 app.use(express.json()); // parsing body
 app.use(express.urlencoded({ extended: true }));
