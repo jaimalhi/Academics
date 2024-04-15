@@ -11,6 +11,6 @@
 
 ### Technologies
 
--  Backend: (ExpressJS)[https://expressjs.com/] (via Node)
--  Frontend: (Sveltekit)[https://kit.svelte.dev/] (with [Skeleton UI](https://www.skeleton.dev/))
+-  Backend: [ExpressJS](https://expressjs.com/) (via Node)
+-  Frontend: [Sveltekit](https://kit.svelte.dev/) (with [Skeleton UI](https://www.skeleton.dev/))
 -  Database: PostgreSQL
