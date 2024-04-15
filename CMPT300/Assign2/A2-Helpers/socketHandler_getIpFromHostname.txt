@@ -1,0 +1,35 @@
+// converts hostname to an ip, result stored in ip
+int SocketHandler_getIpFromHostname(const char *hostname, char *ip){
+    // Check if ip is NULL
+    if (ip == NULL) {
+        perror("NULL IP address pointer");
+        return -1;
+    }
+
+    struct hostent *hostInfo;
+    struct in_addr **addressList;
+
+    // Get host information
+    if ((hostInfo = gethostbyname(hostname)) == NULL){
+        perror("gethostbyname"); // gethostbyname failed
+        return -1;
+    } 
+
+    addressList = (struct in_addr **) hostInfo->h_addr_list;
+
+    for(int i = 0; addressList[i] != NULL; i++) {
+        // Convert the network address structure to a string
+        char *addr = inet_ntoa(*addressList[i]);
+        if (addr == NULL) {
+            perror("inet_ntoa"); // inet_ntoa failed
+            return -1;
+        }
+
+        // Use strncpy to avoid potential buffer overflow.
+        // Copy the IP address to ip and return
+        strncpy(ip, addr, INET_ADDRSTRLEN);
+        return 0;
+    }
+    
+    return -1;
+}

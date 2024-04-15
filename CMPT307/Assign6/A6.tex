@@ -1,0 +1,343 @@
+\documentclass[letterpaper,12pt]{article}
+\textwidth=6.8in
+\textheight=9.0in
+\oddsidemargin=-0.3in
+\topmargin=-0.7in
+\parskip=0.05 in
+\usepackage{graphicx}
+%\usepackage{verbatim}
+%\usepackage{graphicx}
+\usepackage{epsfig}
+%***************** new package****************
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{latexsym} % used f
+
+\newcommand{\nil}{{\mathop{\rm nil}}}
+\newcommand{\opt}{{\mathop{\rm opt}}}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+
+
+\begin{document}
+%\pagestyle{empty}
+%\pagestyle{plain}
+\bibliographystyle{plain}
+\pagestyle{myheadings}
+\markright{CMPT307 24-1 Assignment 6 | Jai Malhi (301457742)}
+
+%\setlength{\baselineskip}{20pt}
+\noindent
+{\bf Due 23:59 April 7 (Sunday)}. There are 100 points in this assignment. \\
+Submit your answers ({\bf must be typed}) in pdf file to CourSys\\
+{\tt https://coursys.sfu.ca/2024sp-cmpt-307-d1/}.\\
+Submissions received after 23:59 will get penalty of reducing points: 20 and 50 points
+deductions for submissions received at $[00:00,00:10]$ and $(00:10,00:30]$ of April 8,
+respectively; no points will be given to submissions after $00:30$ of April 8.
+
+\begin{enumerate}
+\item 10 points (Ex 22.1-3 of text book)
+
+For any pair of nodes $u$ and $v$ in an edge-weighted digraph $G$ with no negative
+cycles, let $P_{uv}=\{u\leadsto v\}$ be the set of shortest paths from $u$ to $v$
+and $p^*_{uv}$ be the path in $P_{uv}$ with the minimum number of edges. Let
+$r(p^*_{uv})$ be the number of edges in $p^*_{uv}$ and
+$r=max_{u,v\in V} r(p^*_{uv})$. Give a simple change to the Bellman-Ford algorithm
+that allows it to terminate in $r+1$ passes, even if $r$ is not known in advance;
+prove the correctness of the revised algorithm. \\
+
+\textbf{We can modify the Bellman-Ford algorithm in the following way:} \\
+- keep a counter for each vertex which counts the number of times the shortest path has been updated (for that vertex) \\
+- during each pass, if an update happens for that particular vertex, increase the counter \\
+- if the counter exceeds $r+1$ for any vertex the algorithm terminates early since this indicates all shortest paths with at most $r$ edges have been found \\
+- if no updates happen in a pass before reaching $r+1$ passes, the algorithm terminates since the shortest paths have been found and set \\
+
+\textbf{Correctness of the Algorithm:} \\
+- since the graph does not have negative cycles we know the shortest path between any two vertices will be finite \\
+- Since the Bellman-Ford algorithm finds the shortest path with at most $V-1$ edges if a path were to be updated on the $V^th$ pass or later, it would mean there is a cycle, which contradicts the no negative cycle condition \\
+- Therefore, if the shortest path is not updated by the $r+1$ pass it means the algortihm has already computed the shortest paths correctly \\
+
+\noindent\rule{16cm}{0.1pt}
+\item 20 points (Ex 24.1-3 of text book) 
+
+In the Bellman-Ford shortest path algorithm discussed in class, the structure of a 
+shortest path of at most $i$ arcs from a source node $s$ to a destination node $v$ 
+in a graph $G$ is defined based on a shortest path of at most $i-1$ arcs from $s$ to 
+$v$ and a shortest path of at most $i-1$ arcs from $s$ to every node $w$ with an arc 
+$(w,v)$ plus the arc $(w,v)$. Distance-vector shortest path algorithm (a distributed 
+version of Bellman-Ford algorithm) is used by an internet routing protocol to compute 
+routing tables at routers. In the distance-vector algorithm, the structure of a shortest 
+path of at most $i$ arcs from $s$ to $v$ is defined based on a shortest path of at most 
+$i-1$ arcs from $s$ to $v$, and for every arc $(s,w)$, the arc $(s,w)$ plus a shortest 
+path of at most $i-1$ arcs from $w$ to $v$. Let $G$ be a digraph of $n$ nodes and $m$ 
+arcs without any negative cycle. For the distance-vector algorithm, give the structure 
+of a shortest path of at most $i$ arcs from $s$ to $v$, Bellman equation and pseudo code 
+to compute the shortest distance from $s$ to every other node of $G$ and the running time 
+of the pseudo code (express the time in $n$ and out-degree $\deg(s)$ of source node
+$s$) ({\bf Hint:} Since shortest paths from multiple nodes (e.g., $s,w$) to $v$ are
+used, you may need to use $\opt(i,x,y)$ to explicitly express the optimal solution
+of at most $i$ arcs from node $x$ to node $y$. You can assume $\opt(i-1,w,v)$ is
+given for every arc $(s,w)$ when computing $\opt(i,s,v)$ for every $i$.) \\
+
+\textbf{Structure of the shortest path:} \\
+- In the distance-vector version of the Bellman-Ford algorithm, the shortest path from a source node $s$ to a node $v$ using at most $i$ arcs can be made recursively \\
+- Either the shortest path from $s$ to $v$ using at most $i-1$ arcs \\
+- or is a shortest path from $s$ to some middle node $w$ using at most $i-1$ arcs, plus the arc from $w$ to $v$ \\
+
+\textbf{Bellman Equation:} \\
+- use the Bellman structure to structure and update the distance estimates from $s$ to $v$ \\
+- Let $opt(i, s, v)$ denotes the length of the shortest path from $s$ to $v$ using at most $i$ arcs \\
+- Then: $opt(i,s,v) = min \{opt(i-1,s,v), min_{(w,v)\in E}(opt(i-1,s,w)+c(w,v))\}$ \\
+- Where $E$ is the set of edges in the graph and $c(w,v)$ is the cost/weight from edge $w$ to $v$ \\
+
+\textbf{Pseudo Code:}
+\begin{verbatim}
+DistanceVectorBellmanFord(G, s):
+    n = number of nodes in G
+    Initialize distance array d[0...n-1] to infinity
+    d[s] = 0  // distance to self is 0
+    
+    for i from 1 to n-1:  // Loop over number of arcs
+        for each node v in G:
+            for each edge (w, v) in G:
+                if d[w] + c(w, v) < d[v]:
+                    d[v] = d[w] + c(w, v)
+    
+    return d
+\end{verbatim}
+
+\textbf{Running time:} \\
+- the outer loop rungs $n-1$ times, for each node $v$, the inner loop iterates over all incoming edges $(W,v)$. the out-degree of node $s$ is $deg(s)$, the inner loop runs $m$ times (once for each edge in the graph) \\
+- Therefore, \textbf{the running time is $O(n*m)$}; However, since we are expressing in terms of $n$ and $deg(s)$ the running time depends on the structure of the graph
+
+
+\item 15 points
+
+Write two programs for Dijkstra's single source shortest paths algorithm discussed
+in class, one implements the algorithm with the input graph $G$ represented by
+adjacent list and the other implements the algorithm with $G$ represented by
+adjacent matrix. Run your programs on the graph in Figure~\ref{fig-1} and show
+the shortest paths found. Run your programs on $G$ with $n=100,200,400,800$
+nodes, for each $n$, with $m\approx 3n,n^{1.5},n(n-1)/2$ edges, and each edge is
+assigned a random number from $[1,a]$ for some $a>1$. Report the running times of
+your programs on a computer. Write a procedure to create input graphs for both
+implementations and exclude the running time of the procedure from the times of
+your implmentations for Dijkstra's algorithm. Please do not submit the codes.
+(Hint: For each $n$, first create a connected base graph of nodes $v_1,..,v_n$, e.g.,
+a cycle, then add $m-n$ edges $\{u,v\}$ with $u,v$ randomly selected from $\{v_1,..,v_n\}$
+to the base graph.)
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\linewidth]{q3.png}
+    \caption{Input Graph for Q3}
+    \label{fig-1}
+\end{figure}
+
+(5 points)
+(5 points) for each of the reported results from the implementations. \\
+
+\textbf{Part 1: Shortest Paths Found from source S}
+
+\textbf{Using Adjacent List:} 
+\begin{verbatim}
+Distance from 0 to 0 is 0, Path: 0 
+Distance from 0 to 1 is 8, Path: 0 4 1 
+Distance from 0 to 2 is 9, Path: 0 4 1 2 
+Distance from 0 to 3 is 7, Path: 0 4 3 
+Distance from 0 to 4 is 5, Path: 0 4
+\end{verbatim}
+
+\textbf{Using Adjacent Matrix:} 
+\begin{verbatim}
+Distance from 0 to 0 is 0, Path: 0 
+Distance from 0 to 1 is 8, Path: 0 4 1 
+Distance from 0 to 2 is 9, Path: 0 4 1 2 
+Distance from 0 to 3 is 7, Path: 0 4 3 
+Distance from 0 to 4 is 5, Path: 0 4 
+\end{verbatim}
+
+\textbf{Part 2: Running Times} \\
+\underline{1. n = 100} \\
+\textbf{m = 3n} \\
+- using adjacency list: $5.8e-05$ seconds \\
+- using adjacency matrix: $7.3e-05$ seconds \\
+\textbf{m = $n^{1.5}$} \\
+- using adjacency list: $8.5e-05$ seconds \\
+- using adjacency matrix: $0.000104$ seconds \\
+\textbf{m = n(n-1)/2} \\
+- using adjacency list: $0.000252$ seconds \\
+- using adjacency matrix: $0.000163$ seconds \\
+\\
+\underline{2. n = 200} \\
+\textbf{m = 3n} \\
+- using adjacency list: $8e-05$ seconds \\
+- using adjacency matrix: $0.000184$ seconds \\
+\textbf{m = $n^{1.5}$} \\
+- using adjacency list: $0.000216$ seconds \\
+- using adjacency matrix: $0.000287$ seconds \\
+\textbf{m = n(n-1)/2} \\
+- using adjacency list: $0.000867$ seconds \\
+- using adjacency matrix: $0.000606$ seconds \\
+\\
+\underline{3. n = 400} \\
+\textbf{m = 3n} \\
+- using adjacency list: $0.000207$ seconds \\
+- using adjacency matrix: $0.000587$ seconds \\
+\textbf{m = $n^{1.5}$} \\
+- using adjacency list: $0.000538$ seconds \\
+- using adjacency matrix: $0.000919$ seconds \\
+\textbf{m = n(n-1)/2} \\
+- using adjacency list: $0.003762$ seconds \\
+- using adjacency matrix: $0.001839$ seconds \\
+\\
+\underline{4. n = 800} \\
+\textbf{m = 3n} \\
+- using adjacency list: $0.000428$ seconds \\
+- using adjacency matrix: $0.002102$ seconds \\
+\textbf{m = $n^{1.5}$} \\
+- using adjacency list: $0.001501$ seconds \\
+- using adjacency matrix: $0.00271$ seconds \\
+\textbf{m = n(n-1)/2} \\
+- using adjacency list: $0.025075$ seconds \\
+- using adjacency matrix: $0.006262$ seconds \\
+
+\noindent\rule{16cm}{0.1pt}
+\item 15 points (Ex 22.3-7 of text book)
+
+Let $G$ be a digraph representing a communication network with each edge $e=(u,v)$
+assigned a weight $0\leq r(e)\leq 1$ representing the reliability of the
+communication link from $u$ to $v$. The reliability of a path $P$ consisting of
+edges $e_1,e_2,..,e_k$ is $r(P)=\Pi_{1\leq i\leq k} r(e_i)$ (e.g., for
+$P=e_1,e_2,e_3$, $r(P)=r(e_1)\times r(e_2)\times r(e_3)$). The reliability of a
+path with 0 edge (path from a node $u$ to $u$) is 1. Give an efficient
+algorithm to find a most reliable path from a source node $s$ and every other node
+in $G$; prove the correctness and analyze the running time of the algorithm. \\ \\
+- To find the most reliable path from our source node $s$ to every other node, we can modify Dijkstra's algorithm \\
+- Instead of using addition to find the path with the smallest weight we will use multiplication to select the path with the largest product of weights (since we want high reliability) \\
+\textbf{Modified Dijkstra's:}
+\begin{verbatim}
+1. Initialize the reliability of the source node 's' to itself as 1 
+   (since r(e) for a 0-edge path is 1).
+2. Set the reliability to all other nodes as 0 (since we have not 
+   visited them yet).
+3. For the current node, consider all of its unvisited neighbors and 
+   calculate the reliability of the path to each neighbor by multiplying 
+   the reliability of the current node by the reliability of the edge 
+   leading to that neighbor.
+4. If this new reliability is higher than the previously recorded 
+   reliability for the neighbor, update it.
+5. Once all neighbors are considered, mark the current node as visited, 
+   and select the unvisited node with the highest reliability as the 
+   next node to process.
+6. Repeat steps 3-5 until all nodes have been visited.
+\end{verbatim}
+
+\textbf{Correctness of Algorithm:}\\
+- at each step we are choosing the most reliable path to a a new node, and we update the reliability only when we find a more reliable path \\
+- this follows a greedy approach since the we always pick the path that gives the max product at each step \\
+
+\textbf{Running Time:} \\
+- The running time of Dijkstra's is $O((V+E)logV)$ with the use of a min-priority queue \\
+- in our case we want to use a max-priority queue to get the most reliable path first \\
+- Therefore, the running time remains the same at $O((V+E)logV)$ \\
+
+\noindent\rule{16cm}{0.1pt}
+\item 10 points (Ex 23.1-8)
+
+Let $Q^{(m)}$ be an $n\times n$ array that $Q^{(m)}[i,j]$ contains the
+predecessor of node $j$ on a shortest path from node $i$ to $j$ that has at most
+$m$ edges. Modify the Extend-Shortest-Paths algorithm and
+Slow-All-Pairs-Shortest-Paths algorithm to compute the matrices
+$Q^{(1)},Q^{(2)},..,Q^{(n-1)}$ as the matrices $L^{(1)},L^{(2)},..,L^{(n-1)}$
+are computed. \\ \\
+\textbf{Extend-Shortest-Paths algorithm:}
+\begin{verbatim}
+ExtendShortestPaths(L, W, Q):
+    n = L.rows
+    let L' = new n x n matrix
+    let Q' = new n x n matrix
+    for i = 1 to n
+        for j = 1 to n
+            L'[i, j] = infinity
+            Q'[i, j] = NIL
+            for k = 1 to n
+                if L[i, k] + W[k, j] < L'[i, j]
+                    L'[i, j] = L[i, k] + W[k, j]
+                    // Update the predecessor to be the predecessor 
+                    // of the intermediate vertex
+                    Q'[i, j] = Q[i, k]  
+    return (L', Q')
+\end{verbatim} 
+
+. \\
+
+\textbf{Slow-All-Pairs-Shortest-Paths algorithm:}
+\begin{verbatim}
+SlowAllPairsShortestPaths(W):
+    n = W.rows
+    let L(1) = W
+    let Q(1) = new n x n matrix
+    for i = 1 to n
+        for j = 1 to n
+            if i == j or W[i, j] == infinity
+                Q(1)[i, j] = NIL
+            else
+                Q(1)[i, j] = i
+    for m = 2 to n-1
+        let L(m), Q(m) = ExtendShortestPaths(L(m-1), L(1), Q(m-1))
+    return L(n-1), Q(n-1)
+\end{verbatim}
+\textit{Note: we call Extend-Shortest-Paths and update the L and Q matrices to ensure the computation of the shortest paths after $n-1$ iterations while considering paths with at most $n-1$ edges and their predecessors}
+
+\noindent\rule{16cm}{0.1pt}
+\item 15 points (Ex 23.2-8 of text book)
+
+Give an $O(n(m+n))$ time algorithm for computing the transitive closure of a directed
+graph $G$ of $n$ nodes and $m$ edges; prove the correctness and analyze the running
+time of the algorithm. \\ \\
+- We can determine reachable vertices from a particular vertex in $O(m+n)$ by using a basic searching algorithm such as Depth-First Search (DFS) \\
+\textbf{High-Level Approach:} \\
+1. Initialize a $n \times n$ matrix $T$ to represent the transitive closure with all initial values set to 0 (false) \\
+2. For each node $u$ in our graph $G$ perform a DFS starting from $u$, whenever a node $v$ is reached set $T[u][v]=1$ \\
+3. The matrix $T$ now represents the transitive closure of $G$ \\
+
+\textbf{Proof of correctness:}\\
+- The DFS algorithm ensures that if there is a path from vertices $u$ to $v$ then $T[u][v]=1$ (set to true) \\
+- if there is no path from $u$ to $v$ then the algorithm will not set $T[u][v]$ and will leave $T[u][v]=0$ \\
+- Thus, $T[u][v]$ us true if and only if there is a path from $u$ to $v$ in $G$, giving us the definition of transitive closure \\
+
+\textbf{Running Time:} \\
+- For each node the DFS takes $O(m+n)$ time, since we perform a DFS on all $n$ nodes the running time of the algorithm is $O(n(m+n))$ \\
+
+\noindent\rule{16cm}{0.1pt}
+\item 15 points 
+
+Professor Michener claims that there is no need to create a new source node in
+line 1 of Johnson's shortest path algorithm for the all pairs shortest paths problem,
+and suggets to use $G'=G$ and let $s$ be any vertex of $G'$. Assume that $\infty-\infty$
+is undefined, especially, it is not 0. Give an example of an edge weighed directed graph
+$G$ to show that the professor's modification on Johnson's algorithm does not give a
+correct answer. Prove if $G$ is strongly connected, then the professor's
+modification on Johnson's algorithm is correct. \\ \\
+\textbf{a) Edge weighed directed graph $G$ to show that the professor's modification on Johnson's algorithm does not give a correct answer} \\
+\underline{Using a counter-example, consider a graph with the following:} \\
+1. graph has at least three vertices $A, B, C$ \\
+2. there are edges $(A,B)$ and $(B,C)$ with positive weights and edge $(C,A)$ with a negative weight \\
+3. there is no edge from A to C directly \\
+- if we choose $A$ as the source vertex for the Bellman-Ford algorithm it will not correctly reweight edge $(C,A)$ since $A$ is not reachable from $C$ without passing through $B$ \\
+- Because of this, any subsequent use of Dijkstra's algorithm may not yield the correct shortest path from $C$ to $A$ \\
+
+\textbf{b) Prove if $G$ is strongly connected, then the professor's
+modification on Johnson's algorithm is correct} \\
+- A graph is strongly connected if there is a path from every vertex to every other vertex. In such graphs, every vertex is reachable from every other vertex \\
+- Thus, if $G$ is strongly connected, we can choose any vertex $s$ as the starting point for the Bellman-Ford algorithm \\
+- Because every vertex is reachable from $s$, the Bellman-Ford algorithm will successfully compute the minimum weight $h(v)$ from s to every other vertex v \\
+- The key here is that in a strongly connected graph, the Bellman-Ford algorithm will not miss any vertex because all vertices are part of some cycle or are connected by a path to s. \\
+- Therefore, the reweighting will work, and the modified algorithm will yield the correct shortest paths after applying Dijkstra's algorithm to each vertex in the reweighted graph \\
+
+\end{enumerate}
+
+
+\end{document}
+
+

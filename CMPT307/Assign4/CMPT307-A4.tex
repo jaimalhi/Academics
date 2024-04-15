@@ -1,0 +1,249 @@
+\documentclass[letterpaper,12pt]{article}
+\textwidth=6.5in
+\textheight=8.7in
+\oddsidemargin=-0.2in
+\topmargin=-0.7in
+\parskip=0.05 in
+\usepackage{graphicx}
+%\usepackage{verbatim}
+%\usepackage{graphicx}
+\usepackage{epsfig}
+%***************** new package****************
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{latexsym} % used f
+
+\newcommand{\nil}{{\mathop{\rm nil}}}
+\newcommand{\opt}{{\mathop{\rm opt}}}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+
+
+\begin{document}
+%\pagestyle{empty}
+%\pagestyle{plain}
+\bibliographystyle{plain}
+\pagestyle{myheadings}
+\markright{CMPT307 24-1 Assignment 4 | Jai Malhi (301457742)}
+
+%\setlength{\baselineskip}{20pt}
+\noindent
+{\bf Due 23:59 March 10 (Sunday)}. There are 100 points in this assignment. 
+Submit your answers ({\bf must be typed}) in pdf file to CourSys\\
+{\tt https://coursys.sfu.ca/2024sp-cmpt-307-d1/}.\\
+Submissions received after 23:59 will get penalty of reducing points: 20 and 50 points
+deductions for submissions received at $[00:00,00:10]$ and $(00:10,00:30]$ of March 11,
+respectively; no points will be given to submissions after $00:30$ of March 11.
+ 
+\begin{enumerate}
+\item 15 points 
+\textbf{There are two machines $A$ and $B$ and a job $J$. In each time interval $t_i$ of
+$t_1,..,t_n$, $J$ can be executed on $A$ by $a_i>0$ steps or on $B$ by $b_i>0$
+steps or moved between machines (from $A$ to $B$ or from $B$ to $A$, $J$ is
+executed 0 step). Design a dynamic programming algorithm (optimal solution structure,
+Bellman equation, pseudo code and running time) which, given $a_1,..,a_n$ and $b_1,..,b_n$, 
+finds a plan that decides run $J$ on $A$ or on $B$ or move between machines for every 
+interval such that $J$ is executed by a maximum number of steps. At $t_1$, $J$ can be 
+executed on either $A$ or $B$. (Hint: Let $\opt(i,A)$ (resp. $\opt(i,B)$) be the number of 
+steps executed in an optimal plan in $t_1,..,t_i$ that runs job $J$ at time $t_i$ on machin 
+$A$ (resp. $B$). Then the maximum number of steps executed is $\max\{\opt(n,A),\opt(n,B)\}$.)} \\
+
+\textbf{Optimal Solution Structure $\And$ Bellman Equation} \\
+- The optimal number of steps $opt(t_i, X)$ for machine X at time $t_i$ can be computed based on the previous steps optimal solutions \\
+- The job can continue running on the same machine as the last step or switch to the other machine \\
+- We can define the recurrence as: \\ \\
+\(opt(t_i, A) = max(a_i + opt(t_{i-1}, A), b_i + opt(t_{i-1}, B)\) \\
+\(opt(t_i, B) = max(b_i + opt(t_{i-1}, B), a_i + opt(t_{i-1}, A)\) \\ \\
+- Note that we are ignoring the potential \textit{switch cost} between the machines in this calculation \\
+
+\textbf{Pseudo Code} 
+\begin{verbatim}
+Initialize opt(0, A) and opt(0, B) to 0
+for i from 1 to n do:
+    opt(i, A) = max(a[i] + opt(i-1, A), b[i] + opt(i-1, B))
+    opt(i, B) = max(b[i] + opt(i-1, B), a[i] + opt(i-1, A))
+end for
+return max(opt(n, A), opt(n, B))
+\end{verbatim}
+
+\textbf{Running Time} \\
+- The running time of this algorithm is $O(n)$ \\
+- Since we solve $2n$ subproblems (two for each time interval, one for each machine) and we are able to solve each in constant time, therefore the running time is $O(n)$ \\
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 10 points (Ex 14.3-2 of text book)
+
+\textbf{Describe the recursion tree for the Merge-Sort procedure for an array of $n$ elements.
+Explain why memoization fails to speed up a good divide-and-conquer algorithm such as 
+Merge-Sort}. \\
+- We can describe the recursion tree as follows
+\begin{verbatim}
+1. Initial Level (Root): The root of the tree represents the entire 
+array of n elements to be sorted.
+
+2. First Level: Consists of two nodes, each representing a sub-array 
+of size n/2. This is because Merge-Sort divides the array into two halves.
+
+3. Subsequent Levels: Each of these sub-arrays is further divided into 
+two sub-arrays of size n/4, and this process continues, creating new 
+levels of the tree. Each node at each level represents a sub-array, and 
+each sub-array is divided until the size becomes 1.
+
+4. Base Level (Leaves): The leaves of the recursion tree are arrays of 
+size 1, which are trivially sorted.
+
+5. Merge Operations: After reaching the leaves, each level up represents 
+the merge operation, where two sorted sub-arrays of size k are merged to 
+form a sorted array of size 2k.
+\end{verbatim} 
+- Memoization is a technique used to store results for reuse; however it cannot be used to speed up merge-sort because: \\
+1. Merge-sort divides each problem into sub-problems that \textbf{do not overlap} \\
+2. There is not a lot of repetition that could be stored as each merge process is unique to their elements \\
+3. Merge-sort is efficient because of the way it divides and conquers, not because it is solving the same sub-problem multiple times
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 10 points (Ex 14.5-2 of text book)
+
+\textbf{Determine the cost and structure of an optimal binary search tree for an input 
+instance shown below:}
+\begin{table*}[h]
+\begin{center}
+\begin{tabular}{l|cccccccc}
+$i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7  \\ \hline
+$p_i$ & 0 & 0.04 & 0.06 & 0.08 & 0.02 & 0.10 & 0.12 & 0.14 \\
+$q_i$ & 0.06 & 0.06 & 0.06 & 0.06 & 0.05 & 0.05 & 0.05 & 0.05 
+\end{tabular}
+\end{center}
+\end{table*}
+
+\textbf{Your answer for the tree structure may look like: the root of the tree is
+xxx with left child yyy and right child zzz, the left child of yyy is ...} \\
+- Cost ($E[T]$) = $3.12$; found by constructing a solution to the optimal BST and following the formula presented on Slide 29 of lecture 4 \\ \\
+\textbf{Structure of Optimal BST}
+\begin{verbatim}
+k5 is the root
+    k2 is the left child of k5
+        k1 is the left child of k2
+            d0 is the left child of k1
+            d1 is the right child of k1
+        k3 is the right child of k2
+            d2 is the left child of k3
+            k4 is the right child of k3
+                d3 is the left child of k4
+                d4 is the right child of k4
+    k7 is the right child of k5
+        k6 is the left child of k7
+            d5 is the left child of k6
+            d6 is the right child of k6
+        d7 is the right child of k7
+\end{verbatim} 
+
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 20 points Interval scheduling with $p$ recourses
+
+\textbf{Given a set $S=\{a_1,..,a_n\}$ of proposed jobs and $p>1$ resources, each job requires
+a resource and each resource can serve exactly one job at a time. Each job $a_i$ has a
+start time $s_i$ and a finish time $f_i$ with $0\leq s_i<f_i<\infty$. If job $a_i$ is
+assigned to a resource $r$, then $r$ serves $a_i$ in time interval $[s_i,f_i)$. Jobs
+$a_i$ and $a_j$ are compatible if $[s_i,f_i)\cap [s_j,f_j)=\emptyset$. Design a greedy
+algorithm which assigns a maximum number of jobs from $S$ to resources so that the jobs
+assigned to a same resource are mutually compatible, and analyze your algorithm}. \\
+- We can follow a similar approach to the greedy algorithm scheduling a single resource (p = 1) \\
+\textbf{High Level approach:} \\ 
+\textbf{1.} Sort all jobs by finish time in ascending order \\
+\textbf{2.} Initialize $p$ empty priority queues with each queue representing a resource's schedule \\
+\textbf{3.} Iterate through sorted jobs and for each job: \\
+\ . \ a. check each queue if the jobs can be assigned to a resource (without conflict); we know it can be assigned if it starts after the last job finished \\
+\ . \ b. if the job can be assigned to a resource add it to the queue \\
+\ . \ c. if job cannot be assigned, skip it \\
+\textbf{4.} After all jobs have been processed, the queues represent the max number of jobs that can be scheduled on each resource without overlap \\
+
+\textbf{Algorithm Analysis} \\ 
+- Sorting the jobs takes $O(nlogn)$ time \\
+- for each of the $n$ jobs we may check (up to) $p$ queues to find a compatible resource; in the worst case this is $O(np)$ \\
+- Assuming that insertion and extractions from our priority queue take $O(logp)$ (heap) and that the number of resources will be less than the number of jobs, then the job assignment steps take $O(nlogp)$ \\
+- Therefore, the overall complexity is $O(nlogn + nlogp)$ which can be simplified depending on the values of $p$ and $n$ \\
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 15 points (Ex 15.2-5 of text book)
+
+\textbf{Give a greedy algorithm which, given a set $X=\{x_1,..,x_n\}$ of real
+numbers in the interval $[0,1000]$, finds minimum number of unit-length closed
+intervals $[a_1,b_1],..,[a_k,b_k]$ (e.g., $b_i-a_i=1$) such that every number of
+$X$ is contained in some interval $[a_i,b_i]$; prove the correctness and analyze
+the algorithm.} \\ \\
+\textbf{Algorithm Description:} \\
+1. sort the set $X$ in increasing order \\
+2. initialize an empty list of intervals $I$ \\
+3. Iterate through the sorted list $X$; if the current element $x_i$ is not covered by the last interval in $I$ then add a new interval $[x_i, x_i + 1]$ \\
+4. Return the list $I$ as the set of intervals that cover $X$ \\
+
+\textbf{Proof of Correctness:} prove we produce an optimal solution \\
+1. \textbf{Greedy Choice Property:} At each step, choosing the interval starting at $x_i$ to cover $x_i$ (itself) is optimal because it leave the most room for future elements without covering $x_{i+1}$; this also ensures our intervals are of unit length \\
+2. \textbf{Optimal Substructure:} A problem exhibits optimal substructure if an optimal solution to the problem contains within it optimal solutions to sub-problems. Once we cover the interval $[x_i, x_i + 1]$, what remains is a smaller problem of covering the rest of the numbers with the minimum number of intervals. Since $x_i$ is locally optimal and doesn't affect the remaining numbers we can find an optimal solution to the entire problem by solving the sub-problem optimally and adding the interval for $x_i$ to the solution. \\
+
+\textbf{Algorithm Analysis:} \\
+- The sort operation on $X$ takes $O(nlogn)$ time \\
+- The iteration through the set $X$ takes $O(n)$ \\
+- Thus, the time complexity of the algorithm is $O(nlogn)$
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 15 points (Ex 15.3-7 of text book)
+
+\textbf{Suppose that a data file contains a sequence of $8$-bit characters such that all
+$256$ characters are about equally common: the maximum character frequency is less
+than twice the minimum character frequency. Prove that Huffman coding in this
+case is no more efficient than using an ordinary $8$-bit fixed-length code.} \\ \\
+\textbf{Fixed-Length vs Huffman Coding:} \\
+- Fixed-length coding represents each character by a code of the same length. In this case 23 have 256 possible characters and each character will have a fixed length of 8 bits \\
+- Huffman coding allows variable length encoding where the frequency of each character is used to build a binary tree where more common characters have shorter codes, and less common characters have longer codes. \\
+
+\textbf{Proof:} \\
+Since we are under an equal frequency assumption all characters have the same frequency of $1/256$. We know that the maximum character frequency is less than twice the minimum character frequency; this implies that even the least common character is not very rare compared to the most common character. As mentioned above, Huffman's coding comes from the fact that more common characters are given shorter codes, thus reducing the average code length. However, since all characters are about equally common, we wouldn't gain much by assigning shorter codes to some characters and longer codes to others. The best case scenario for Huffman coding would have the most frequent character have a frequency just under $2/256$ and the least frequent would have a frequency of $1/256$; given this information, most characters would still be close to 8 bits in length. \\
+
+Therefore, Huffman coding will not provide a more efficient encoding than fixed-length coding because the frequency distribution of the characters doesn't allow for significant compression. The near-uniform distribution of character frequencies means that most Huffman codes will end up being close to 8 bits long, negating any potential efficiency gains 
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 15 points (Ex 16-1.3, 16-2.2, 16-3.2 of text book)
+
+\textbf{Suppose we perform a sequence of $n$ operations on a data structure in which the
+$i$th operation costs $i$ if $i$ is an exact power of $2$, and $1$ otherwise. (a)
+Use aggregate analysis to determine the amortized cost per operation. (b) Use an
+accounting method of analysis to determine the amortized cost per operation. (c)
+Use a potential method of analysis to determine the amortized cost per operation.} \\ \\
+
+\textbf{Aggregate Analysis:} \\
+- Compute the total cost of a sequence of operations then determine the average cost per operation \\
+- Cost for all operations is 1 unless the index is an exact power of 2, in which case the cost is $i$ \\
+- The exact powers of 2 up to n: $2^0, 2^1, ...,$ up to the largest power of $2 \leq n$ \\
+- Thus, the sum of all powers of 2 up to n is $< 2n$ \\
+- then adding up the costs for all operations where the index is not a power of 2 (costs 1 each), and add the sum of the powers of 2 where the operation index is a power of 2, the total cost will be $< 3n$ \\
+- Lastly, dividing by $n$ ($3n/n$ or $O(n)/n$) gives us an amortized cost per operation of $O(1)$ \\
+
+\textbf{Accounting Method:} \\
+- Here we assign a \textit{amortized cost} to each type of operation \\
+- in this case we assign a cost of 2 for each operation (since we want to assign an amortized cost that is greater than the actual cost for most operations) \\
+- When an operation is performed at an index that is not a power of to it costs 1 and we can \textit{save} 2 for future operations \\
+- When we reach an operation at an index that is a power of 2, we have save enough (from all our previous non-power of 2 operations) to cover the cost \\
+- Thus, over the sequence of $n$ operations this cost will never accumulate beyond $O(n)$, so the amortized cost per operation is $O(n)/n) \to O(1)$ \\
+
+\textbf{Potential Method:} \\
+- $C_i = c_i + \phi(D_i) -\phi(D_{i-1})$ to calculate amortized cost $C_i$ \\
+- Where $c_i$ is the cost of the $i_{th}$ operation \\
+- $\phi(D_i)$ is the potential after the $i_{th}$ operation \\
+- $\phi(D_{i-1})$ is the potential after the $i_{th}$ operation \\
+- Define potential function $\phi(D_0) = 0$ and $\phi(D_i)$ to be the number of operations since the last power of 2, which will increase by 1 for non-power-of-2 indices and decrease by $i-1$ for indices that are powers of 2 \\
+- Thus, this gives is an amortized cost of $O(1)$
+
+\end{enumerate}
+
+
+\end{document}
+
+

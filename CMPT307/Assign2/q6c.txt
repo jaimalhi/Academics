@@ -1,0 +1,29 @@
+Weighted Median Selection in O(n) worst-case time
+WEIGHTED-SELECT
+
+1. Divide n elements into ⌈n/5⌉ groups of 5 elements each and at most one group with the remaining n mod 5 elements.
+
+2. Sort each group and find the median of each group, using the weights to calculate the median such that the sum of weights is balanced on either side of it within the group.
+
+3. Using the weights of the medians, apply WEIGHTED-SELECT recursively to find the median x of the ⌈n/5⌉ medians found in Step 2.
+
+4. Partition n elements using x as the pivot. Let k be the sum of weights of the elements smaller than x, and k' be the sum of weights of the elements equal to x.
+
+5. If k < 1/2 and k + k' ≥ 1/2, then return x. This is because the weighted median will be x, as the weights are balanced around it.
+
+6. Otherwise, if k ≥ 1/2, apply WEIGHTED-SELECT recursively to the elements smaller than x to find the weighted median, adjusting the target weight to be the original target weight minus the sum of weights of elements greater than x.
+
+7. If k < 1/2, apply WEIGHTED-SELECT recursively to the elements greater than x to find the weighted median, adjusting the target weight to be the original target weight minus k.
+
+========================== EXPLANATION OF STEPS =============================
+1. Grouping: We start by grouping the elements into groups of 5. This is a divide-and-conquer strategy that helps to reduce the problem size.
+
+2. Median Finding: Within each group, sort the elements by value (not considering weights) and find the median based on weights. Unlike the traditional SELECT algorithm, here the median is found such that the sum of weights on either side of it is equal, or as close to equal as possible.
+
+3. Recursive Selection: Find the median of the medians, using the weights of the medians, by recursively applying the WEIGHTED-SELECT algorithm. This step ensures that we find a good pivot for partitioning in the next step.
+
+4. Partitioning: Use the weighted median of the medians as a pivot to partition the original list. Calculate the sum of weights for elements smaller than the pivot and the sum of weights for elements equal to the pivot.
+
+5. Median Check: If the sum of the weights of the elements smaller than the pivot is less than 1/2 but adding the weight of the pivot itself brings the cumulative weight to at least 1/2, then the pivot is the weighted median.
+
+6 & 7. Recursive Weighted Selection: Depending on whether the cumulative weight is less than or greater than 1/2, recursively apply WEIGHTED-SELECT to the appropriate subset of elements. The target weight is adjusted to account for the weights of the elements that are no longer in consideration.

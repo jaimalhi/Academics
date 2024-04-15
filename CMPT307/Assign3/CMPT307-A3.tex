@@ -1,0 +1,237 @@
+\documentclass[letterpaper,12pt]{article}
+\textwidth=6.5in
+\textheight=8.7in
+\oddsidemargin=-0.2in
+\topmargin=-0.7in
+\parskip=0.05 in
+\usepackage{graphicx}
+%\usepackage{verbatim}
+%\usepackage{graphicx}
+\usepackage{epsfig}
+%***************** new package****************
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{latexsym} % used f
+
+\newcommand{\nil}{{\mathop{\rm nil}}}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+
+
+\begin{document}
+%\pagestyle{empty}
+%\pagestyle{plain}
+\bibliographystyle{plain}
+\pagestyle{myheadings}
+\markright{CMPT307 24-1 Assignment 3 | Jai Malhi (301457742)}
+
+%\setlength{\baselineskip}{20pt}
+\noindent
+{\bf Due 23:59 Feb 25 (Sunday)}. There are 100 points in this assignment. 
+Submit your answers ({\bf must be typed}) in pdf file to CourSys\\
+{\tt https://coursys.sfu.ca/2024sp-cmpt-307-d1/}.\\
+Submissions received after 23:59 will get penalty of reducing points: 20 and 50 points
+deductions for submissions received at $[00:00,00:10]$ and $(00:10,00:30]$ of Feb 26,
+respectively; no points will be given to submissions after $00:30$ of Feb 26.
+
+ 
+\begin{enumerate}
+\item 10 points (Ex 11.2-1 of text book)
+
+\textbf{A hash function $h$ hashes $n$ distinct keys into an array $T$ of $m$ elements.
+Assuming simple uniform hashing, what is the expected number of collisions, that
+is, the expected value of $|\{\{k,l\}|k\neq l \mbox{ and } h(k)=h(l)\}|$.} \\
+- Under the simple uniform hashing assumption, any given key is equally likely to be hashed to any slot of the array, independently of where any other key has hashed to \\
+- To find the expected number of collisions we find the probability of two keys hash to the same slot using \(1/m\) for a pair of keys \\
+- Further we are assuming the the hash function spreads each key of \textit{m} slots, and since there are \textit{n} keys we can say the probability follows: \(\sum_{i=1}^n \frac{n-i}{m} = \frac{n^2 - n(n+1)/2}{m} = \frac{n(n-1)}{2m} \) \\
+- Thus, the expected number of collisions is \(\frac{n(n-1)}{2m}\)
+\\ \noindent\rule{16cm}{0.1pt}
+
+\item 10 points (Ex 11.2-2 11.3-4 of text book)
+
+\textbf{(a) Hash function $h(k)=k \bmod 9$ is used to insert keys $5,28,19,15,20,33,12,17,10$
+into a hash table $T[0..8]$ with collisions resolved by chaining. Show the
+result of the hash table.} \\
+
+\begin{tabular}{c|l}
+$h(k)$ & keys \\ \hline
+$k \ mod \ 9 = 0$ & \\
+$k \ mod \ 9 = 1$ & 28 $\rightarrow$ 19 $\rightarrow$ 10 \\
+$k \ mod \ 9 = 2$ & 20 \\
+$k \ mod \ 9 = 3$ & 12 \\
+$k \ mod \ 9 = 4$ & \\
+$k \ mod \ 9 = 5$ & 5 \\
+$k \ mod \ 9 = 6$ & 15 $\rightarrow$ 33 \\
+$k \ mod \ 9 = 7$ & \\
+$k \ mod \ 9 = 8$ & 17 \\
+\end{tabular}
+
+\textbf{(b) Hash function $h(k)=\floor{m(kA-\floor{kA})}$ for $A=(\sqrt{5}-1)/2$ is used to 
+insert keys $61,62,63,64,65$ into a hash table $T[0..999]$. Show the locations of 
+the hash table to which these keys are mapped.} \\
+Where m = size of table = 1000 we have: \\
+- \(h(61) = \floor{1000(61\frac{\sqrt{5}-1}{2} - \floor{61\frac{\sqrt{5}-1}{2}})} = 1000(0.700) = 700\) \\
+- \(h(62) = \floor{1000(62\frac{\sqrt{5}-1}{2} - \floor{62\frac{\sqrt{5}-1}{2}})} = 1000(0.318) = 318\) \\
+- \(h(63) = \floor{1000(63\frac{\sqrt{5}-1}{2} - \floor{63\frac{\sqrt{5}-1}{2}})} = 1000(0.936) = 936\) \\
+- \(h(64) = \floor{1000(64\frac{\sqrt{5}-1}{2} - \floor{64\frac{\sqrt{5}-1}{2}})} = 1000(0.554) = 554\) \\
+- \(h(65) = \floor{1000(65\frac{\sqrt{5}-1}{2} - \floor{65\frac{\sqrt{5}-1}{2}})} = 1000(0.172) = 172\) \\
+
+\noindent\rule{16cm}{0.1pt}
+\item 20 points (P 11-4 of text book)
+
+A class ${\cal H}$ of hash functions which map the universe $U$ of keys to 
+$\{0,1,..,m-1\}$ is $k$-independent if, for every fixed sequence of $k$ distinct
+keys $(x_1,..,x_k)$ and for any hash function $h$ chosen at random from ${\cal H}$,
+the sequence $(h(x_1),..,h(x_k))$ is equally likely to be any of the $m^k$ 
+sequences of length $k$ with elements drawn from $\{0,1,..,m-1\}$. \\
+\textit{Note: k-independent = knowing the hash value of one key gives you no information about the hash value of any other key}
+
+\textbf{(a) Show that if ${\cal H}$ is $2$-independent then ${\cal H}$ is universal.} \\
+- Universal class of hash functions ${\cal H}$ has the property that for two distinct keys \textit{x} and \textit{y}, \(Pr[h(x)=h(y)]\) for \textit{h} chosen at random from ${\cal H}$ is \textit{1/m} \\
+- if ${\cal H}$ is 2-independent then for two distinct keys \textit{x} and \textit{y} the sequence (h(x), h(y)) has a \(1/m^2\) probability (since there are $m^2$ such pairs) \\
+- Thus, \(Pr[h(x)=h(y)]\)  is the sum of probabilities of all pairs where the first and second elements are the same (which is 1/m since there are \textit{m} such pairs of $m^2$ pairs) \\
+- Therefore, ${\cal H}$ is universal
+
+\textbf{(d) Assume that Alice and Bob secretly agree on a hash function $h$ from a
+$2$-independent class ${\cal H}$ of hash functions. Each $h\in {\cal H}$ maps the
+keys in a universe $U$ to $\mathbb{Z}_p$, where $p$ is prime. Alice sends $(x,t)$,
+where $x\in U$ and $t=h(x)$ is an authentication tag, to Bob over the Internet. 
+Bob checks the pair $(x,t)$ he receives indeed satisfies $t=h(x)$. Assume that an 
+adversary intercepts $(x,t)$ en route and tries to fool Bob by replacing the pair 
+$(x,t)$ with a different pair $(x',t')$ with $x'\in U$, $x'\neq x$, $t'=h'(x')$ and 
+$h'\in {\cal H}$. Prove the probability that the adversary succeeds in fooling Bob 
+into accepting $(x',t')$ is at most $1/p$.} \\
+- Since the adversary chose a different hash function and key $h'(x')$, the probability that $h'(x') = h(x)$ is $1/p$ since ${\cal H}$ is 2-independent and therefore universal \\
+- Furthermore, for any $x'$ and $t$ the probability $t=h'(x')$ is $1/p$ since there are $p$ possible hash values and $h'$, is uniformly distributed \\
+- Thus, since the adversary is picking $x'$ without knowing $h$ and $h$ is 2-independent, the hash $h(x')$ is equally likely to be any of the $p$ values in the space of $h$ 
+
+\noindent\rule{16cm}{0.1pt}
+\item 10 points (Ex 12.1-5)  
+
+\textbf{Prove that in the worst case in the comparison model, any comparison-based algorithm
+takes $\Omega(n\log n)$ time to construct a binary search tree from an arbitrary list
+of $n$ elements. (Hint: apply the $\Omega(n\log n)$ lower bound on the worst case
+running time of comparison-based sorting algorithm to sort $n$ numbers.)} \\
+- To maintain the property of BSTs, where each node has a key greater than all keys in its left subtree and less than all keys in its right subtree, we need to determine the relative order of the elements. \\
+- We know that any comparison-based sorting algorithm requires at least $\Omega(n\log n)$ comparisons in the worst cast to sort $n$ elements \\
+- Putting these two facts together, we need to know the relative order of the arbitrary list in order to construct a BST, therefore constructing a BST requires at least $\Omega(n\log n)$ comparison
+
+\noindent\rule{16cm}{0.1pt}
+\item 15 points 
+
+\textbf{Implement the algorithms Cut-Rod$(p,n)$ (slide page 4), Memoized-Cut-Rod$(p,n)$
+(slide page 6) and Bottom-Up-Rod$(p,n)$ (slide page 7) discussed in class for the
+rod-cutting problem by a same programming language (any language is OK) on a same
+computing plaform. Report the running times of the three algorithms on a computer
+for $n=5,10,15,20,25,30$, respectively. For each instance size $n$, use a same price
+table $p$ to run the three algorithms. Submission of codes is not needed.} \\
+- Note: since running times can vary from each program execution the most frequently occuring running times were selected in a group basis \\
+- Using price table: \\
+0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30, (Prices for rods of length 1 to 10) \\
+35, 40, 45, 50, 55, 60, 65, 70, 75, 80, (Prices for rods of length 11 to 20) \\
+85, 90, 95, 100, 105, 110, 115, 120, 125, 130 (Prices for rods of length 21 to 30) \\
+
+\underline{\textbf{n = 5}}  \\
+- Cut-Rod took 462 nanoseconds \\
+- Memoized-Cut-Rod took 1474 nanoseconds \\
+- Bottom-Up-Cut-Rod took 465 nanoseconds \\
+\underline{\textbf{n = 10}} \\
+- Cut-Rod took 6594 nanoseconds \\
+- Memoized-Cut-Rod took 727 nanoseconds \\
+- Bottom-Up-Cut-Rod took 557 nanoseconds \\
+\underline{\textbf{n = 15}} \\
+- Cut-Rod took 189439 nanoseconds \\
+- Memoized-Cut-Rod took 1330 nanoseconds \\
+- Bottom-Up-Cut-Rod took 967 nanoseconds \\
+\underline{\textbf{n = 20}} \\
+- Cut-Rod took 5370282 nanoseconds \\
+- Memoized-Cut-Rod took 3876 nanoseconds \\
+- Bottom-Up-Cut-Rod took 1566 nanoseconds \\
+\underline{\textbf{n = 25}} \\
+- Cut-Rod took 178997272 nanoseconds \\
+- Memoized-Cut-Rod took 5912 nanoseconds \\
+- Bottom-Up-Cut-Rod took 2148 nanoseconds \\
+\underline{\textbf{n = 30}} \\
+- Cut-Rod took 5555438940 nanoseconds \\
+- Memoized-Cut-Rod took 6469 nanoseconds \\
+- Bottom-Up-Cut-Rod took 2189 nanoseconds \\
+
+
+\noindent\rule{16cm}{0.1pt}
+\item 15 points (Ex 15.1-3 of text book)
+
+\textbf{A modified rod-cutting problem is that, in addition to a price $p_i$ for each rod,
+each cut incurs a fixed cost of $c$, and the revenue associated with a solution is
+the sum of the prices of the pieces minus the costs of making the cuts. Give a
+dynamic-programming algorithm (optimal solution structure, Bellman equation, pseudo
+code and running time) to find the maximum revenue of the modified problem.} \\
+
+\textbf{Optimal Solution Structure $\And$ Bellman Equation} \\
+- The optimal revenue $r[n]$ (rod length $n$) can be obtained in terms of the optimal revenue for shorter rods \\
+- \(r[n] = max_{1 \leq i \leq n}(p[i] + r[n-i] - c)\) \\
+- In the Bellman equation above $p[i]$ is the price of a piece of length $i$, $r[n-i]$ is the max revenue to a rod of length $n-i$, and $c$ is the cost of making a cut
+
+\textbf{Pseudo Code} \\
+- We can modify Bottom-Up-Cut-Rod as follows \\
+- Note: iterate to $j-1$; When the rod is not cut do not apply a cutting cost
+\begin{verbatim}
+Modified-Bottom-Up-Cut-Rod(p, n, c)
+    let r[0..n] be a new array
+    r[0] = 0
+    for j = 1 to n
+        // Start with the price of the whole rod, 
+        // assuming no cuts are made
+        q = p[j]  
+        for i = 1 to j - 1
+            // Consider the revenue from making cuts
+            q = max(q, p[i] + r[j - i] - c) 
+        r[j] = q
+    return r[n]
+\end{verbatim}
+
+\textbf{Running Time} \\
+- The running time of this algorithm is $O(n^2)$ \\
+- Since there are $n$ sub-problems to solve (one for each length) and each sub-problem requires looking at $n$ possible cuts
+
+\noindent\rule{16cm}{0.1pt}
+\item 20 points 
+
+\textbf{A digraph $G$ with nodes $v_1,..,v_n$ is an ordered graph if it has the
+following properties: (i) Every directed edge has the form $(v_i,v_j)$ with $i<j$
+and (ii) for every node $v_i$, $i=1,2,..,n-1$, there is at least one edge of
+the form $(v_i,v_j)$. The length of a path in $G$ is the number of edges in it.
+Given an ordered digraph $G$, the goal is to find the length of the longest path
+that begins at $v_1$ and ends at $v_n$. Give a dynamic programming algorithm 
+(optimal solution structure, Bellman equation, pseudo code and running time) which,
+given an ordered graph, finds the length of the longest path that begins at $v_1$
+and ends at $v_n$.} \\
+
+\textbf{Optimal Solution Structure $\And$ Bellman Equation} \\
+- Build optimal solution using solutions to sub-problems; for any vertex $v_i$, the length of the longest path can be defined using the Bellman equation \\
+- The Bellman equation (recursive definition) for longest path $L(i)$ from vertex $v_i$ to $v_n$ follows: \\
+- Base Case: $L(n) = 0$ because longest path from $v_n$ to itself is zero (no path) \\
+- Recursive Case: We consider all vertices $v_j$ that can be reached from $v_i$, then extend the longest path from $v_j$ to $v_n$ by one edge ($v_i$ to $v_j$ found above)  giving us: \\
+\\ $L(i) = 1 + max(L(j))$ for all $j$ where there is an edge $(v_i, v_j)$ and $i < j$ \\ \\
+- This equation states that the longest path from $v_i$ to $v_n$ is one more than the longest path from any of the vertices $v_j$ that $v_i$ can reach directly \\
+
+\textbf{Pseudo Code} 
+\begin{verbatim}
+LongestPath(G)
+    // L[i] stores the length of the longest path from vertex v_i to v_n.
+    let L[1..n] be a new array filled with -infinity
+    L[n] = 0
+    for i from n-1 downto 1:
+        for each vertex j such that there is an edge (v_i, v_j):
+            L[i] = max(L[i], 1 + L[j])
+    return L[1]
+\end{verbatim}
+
+\textbf{Running Time} \\
+- The running time depends number of edges in the graph since we have to check each edge in the worst case
+- Thus, the running time of this algorithm is $O(V+E)$ where V is the number of vertices and E is the number of edges\\
+
+\end{enumerate}
+
+
+\end{document}
+
+

@@ -1,0 +1,176 @@
+CMPT372 Assignment 3
+=============================================================
+GCP Setup:
+- A Linux disk image running Ubuntu 20.04 LTS
+- Allows both HTTP and HTTPS traffic
+- 2 vCPU with 2 GB of onboard memory
+=============================================================
+Linux Setup:
+sudo apt update 
+sudo apt install apache2 	# install apache
+sudo a2enmod ssl 		# enable SSL
+=============================================================
+Certificate Setup:
+
+# Create a directory for your certificate
+sudo mkdir /etc/apache2/ssl
+
+# Generate a self-signed certificate and key, ignore prompts provided
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache.key -out /etc/apache2/ssl/apache.crt
+
+# Edit the default Apache SSL configuration file
+sudo nano /etc/apache2/sites-available/default-ssl.conf
+
+# Make sure to update configuration file with the path to your certificate and key
+SSLCertificateFile /etc/apache2/ssl/apache.crt
+SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+
+# Enable the SSL virtual host and restart Apache to apply the changes
+sudo a2ensite default-ssl
+sudo systemctl reload apache2
+=============================================================
+Folder Setup:
+# create 2 folders
+sudo mkdir /var/www/html/web1
+sudo mkdir /var/www/html/web2
+
+# Navigate to the web1 directory and create an index.html file:
+echo '<!DOCTYPE html><html><body><h1 style="font-family: Verdana;">Welcome to Webpage 1</h1></body></html>' | sudo tee /var/www/html/web1/index.html
+
+# Repeat for web2, with a slight variation to differentiate
+echo '<!DOCTYPE html><html><body><h1 style="font-family: Arial;">Welcome to Webpage 2</h1></body></html>' | sudo tee /var/www/html/web2/index.html
+=============================================================
+Apache Configuration:
+# You'll need to create new virtual host files for each directory. For example, for web1, create a new configuration
+sudo nano /etc/apache2/sites-available/web1.conf
+
+# Insert the following configuration, adjusting ServerName to your domain or IP
+<IfModule mod_ssl.c>
+    <VirtualHost *:443>
+        ServerAdmin admin@34.136.218.66
+        ServerName 34.136.218.66
+        DocumentRoot /var/www/html/web1
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl/apache.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+	
+        <Directory /var/www/html/web1>
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
+    </VirtualHost>
+</IfModule>
+
+# Repeat for web2, ensuring you change the DocumentRoot accordingly
+sudo nano /etc/apache2/sites-available/web2.conf
+
+<IfModule mod_ssl.c>
+    <VirtualHost *:443>
+        ServerAdmin admin@34.42.178.57
+        ServerName 34.42.178.57
+        DocumentRoot /var/www/html/web2
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/apache2/ssl/apache.crt
+        SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+
+        <Directory /var/www/html/web2>
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
+    </VirtualHost>
+</IfModule>
+
+
+# Enable the new sites and reload Apache
+sudo a2ensite web1.conf
+sudo a2ensite web2.conf
+sudo systemctl reload apache2
+
+# now you will be able to access the /web1 and /web2 directories through the current IP
+=============================================================
+Adding Authentication:
+# ensure you have the apache2-utils package installed for creating password files
+sudo apt-get install apache2-utils
+
+# create password files and add users (grp1 & grp2)
+# The -c option with the htpasswd command creates a new file, so it's only used with the first user of each group. For subsequent users in the same group, you run the command without -c to add them to the existing file
+
+# After running this command, you'll be prompted to enter and confirm the password for as1. Enter 1234 as specified
+sudo htpasswd -c /etc/apache2/grp1.pwd as1
+
+# add second user, you'll again be prompted to enter a password. Enter 5678 for rp2
+sudo htpasswd /etc/apache2/grp1.pwd rp2
+
+# Create the Password File for grp2 and Add the First User (ts3), When prompted, enter the password 4321 for ts3
+sudo htpasswd -c /etc/apache2/grp2.pwd ts3
+
+# add we4, enter 8765 when prompted
+sudo htpasswd /etc/apache2/grp2.pwd we4
+
+# add Bn5, enter 9999 when prompted
+sudo htpasswd /etc/apache2/grp2.pwd Bn5
+
+# Configure the .htaccess files
+sudo nano /var/www/html/web1/.htaccess
+
+# add config to restric access to grp1
+AuthType Basic
+AuthName "Restricted Content"
+AuthUserFile /etc/apache2/grp1.pwd
+Require user as1 rp2 
+
+# Repeat for web2
+sudo nano /var/www/html/web2/.htaccess
+
+# add config
+AuthType Basic
+AuthName "Restricted Content"
+AuthUserFile /etc/apache2/grp2.pwd
+Require user ts3 we4 Bn5
+
+# enable .htaccess files, ensure that Apache is configured to allow .htaccess files to override server 
+# settings. Edit the Apache configuration files for web1 and web2 (or the global Apache configuration 
+# if these sites inherit from it), and make sure the <Directory> directive for your web directories 
+# includes AllowOverride All, example, for web1: (repeat the same for web2)
+# Note: if steps have been followed, this should already be done
+
+<Directory /var/www/html/web1>
+    AllowOverride All
+</Directory>
+
+# after making required changes restart spache
+sudo systemctl restart apache2
+
+# for another method refer to "Adding Authentication.txt"
+=============================================================
+# Current IP
+34.42.178.57
+
+# test SSL connection
+openssl s_client -connect 34.136.218.66:443 -servername 34.136.218.66
+
+
+# editing the html files if desired
+sudo nano /var/www/html/web1/index.html
+
+# All users, passwords, and groups
+User | Password | Group
+=======================
+as1  | 1234     | grp1
+rp2  | 5678     | grp1
+ts3  | 4321     | grp2
+we4  | 8765     | grp2
+Bn5  | 9999     | grp2
+
+# Apache error logs
+sudo tail -f /var/log/apache2/error.log

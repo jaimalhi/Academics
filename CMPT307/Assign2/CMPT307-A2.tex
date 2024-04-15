@@ -1,0 +1,337 @@
+\documentclass[letterpaper,12pt]{article}
+\textwidth=6.5in
+\textheight=8.7in
+\oddsidemargin=-0.2in
+\topmargin=-0.7in
+\parskip=0.05 in
+\usepackage{graphicx}
+%\usepackage{verbatim}
+%\usepackage{graphicx}
+%\usepackage{epsfig}
+%***************** new package****************
+%\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{latexsym} % used f
+
+
+\newcommand{\nil}{{\mathop{\rm nil}}}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+
+\begin{document}
+%\pagestyle{empty}
+%\pagestyle{plain}
+\bibliographystyle{plain}
+\pagestyle{myheadings}
+\markright{CMPT307 24-1 Assignment 2}
+
+%\setlength{\baselineskip}{20pt}
+\noindent
+{\bf Due 23:59 Feb 11 (Sunday)}. There are 100 points in this assignment. 
+Submit your answers ({\bf must be typed}) in pdf file to CourSys\\
+{\tt https://coursys.sfu.ca/2024sp-cmpt-307-d1/}.\\
+Submissions received after 23:59 will get penalty of reducing points: 20 and 50 points
+deductions for submissions received at $[00:00,00:10]$ and $(00:10,00:30]$ of Feb 12,
+respectively; no points will be given to submissions after $00:30$ of Feb 12.
+
+\begin{enumerate}
+\item 20 points (P 5-2 of text book)
+
+Searching an unsorted array problem: Given an array of $n$ elements which are not 
+sorted and a value $x$, find the index $i$ such that $A[i]=x$.  A randomized 
+algorithm Random-Search for the problem is as follows: select a number $i$ from 
+$\{1,..,n\}$ independently and uniformly; if $A[i]=x$ then return $i$ and terminate; 
+otherwise repeat the above process until the $i$ with $A[i]=x$ is found or 
+$A[i]\neq x$ for every $i=1,..,n$ is concluded.
+\textbf{(a) Write a pseudo-code for Random-Search.}
+\begin{verbatim}
+Random-Search(Array A, Key x)
+    n = length(A)
+    Checked = Array of n booleans, initialized to False
+    Checks = 0
+    While Checks < n
+        i = Random(1, n) // Randomly select an index i between 1 and n
+        if Checked[i] == False then
+            Checked[i] = True
+            Checks++
+            if A[i] == x then
+                return i // If the element at index i is x, return i
+    return -1 // If the loop completes, x is not in the array
+\end{verbatim}
+
+\textbf{(b) Assume there is exactly one $i$ such that $A[i]=x$. What is the expected number
+of checks of $A[i]=x$ Random-Search performs before terminates.} \\
+- The expected number of checks or the running time can be determined as follows: \\
+\underline{Three cases:} \\
+1. Worst Case occurs when value x is not in array A for any \(A[i]=x\) \\
+2. Best Case occurs when the first value x selected by Random i \(A[i]=x\) \\
+3. \textbf{Average case calculated as such: }\\
+- for each check, the probability \textit{p} changes since we do not check the same index more than once \\
+- Thus we know that Pr[A[i]=x] on the first check is \(\frac{1}{n}\), second check is \(\frac{1}{n-1}\), ..., going to \(\frac{1}{n-(n-1)}\) \\
+- Taking the average of this sequence we get \(\frac{n+1}{2}\) \\
+- Therefore, we can say that the expected number of checks will be \(\frac{n+1}{2}\) and the average running time will be O(\(\frac{n+1}{2}\)) for an average input n
+\\ \noindent\rule{16cm}{0.1pt}
+ 
+\item 15 points (Ex 6.5-3 of text book)
+
+Write pseudo-code for procedures Min-Heapify, Heap-Minimum, Min-Heap-Extract, 
+Heap-Decrease-Key, and Min-Heap-Insert that implement a min-priority queue with a 
+min-heap. \\
+- \textit{Note: min-priority queue ensures that the smallest element is always at the root of the tree} \\ \\
+\textbf{a) Min-Heapify}
+\begin{verbatim}
+Min-Heapify(Array A, Index i)
+    left = 2*i // index of left child
+    right = 2*i + 1 // index of right child
+    smallest = i
+    
+    if left < heap-size[A] and A[left] < A[i]
+        smallest = left
+    
+    if right < heap-size[A] and A[right] < A[smallest]
+        smallest = right
+    
+    if smallest != i
+        exchange A[i] with A[smallest]
+        Min-Heapify(A, smallest)
+\end{verbatim}
+
+\textbf{b) Heap-Minimum}
+\begin{verbatim}
+Heap-Minimum(Array A)
+    return A[0]
+\end{verbatim}
+
+\textbf{c) Min-Heap-Extract}
+\begin{verbatim}
+Min-Heap-Extract(Array A)
+    if heap-size[A] < 1
+        error "heap underflow"
+    
+    min = Heap-Minimum(A) // A[0]
+    A[0] = A[heap-size[A] - 1] // swap root with last element
+    heap-size[A] = heap-size[A] - 1
+    Min-Heapify(A, 0)
+    
+    return min
+\end{verbatim}
+
+
+\textbf{d) Heap-Decrease-Key}
+\begin{verbatim}
+Heap-Decrease-Key(Array A, Index i, key)
+    if key > A[i]
+        error "new key is larger than current key"
+    
+    A[i] = key
+    while i > 0 and A[parent(i)] > A[i]
+        exchange A[i] with A[parent(i)]
+        i = parent(i)
+\end{verbatim}
+
+\textbf{e) Min-Heap-Insert}
+\begin{verbatim}
+Min-Heap-Insert(A, key)
+    heap-size[A] = heap-size[A] + 1
+    A[heap-size[A] - 1] = +infinity // Assume +infinity signifies a very large number
+    Heap-Decrease-Key(A, heap-size[A] - 1, key)
+\end{verbatim}
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 15 points (Ex 7.4-5 of text book)
+
+One variant of quicksort algorithm is that for a small number $k>1$, the algorithm 
+does not sort any subarray of size smaller than $k$ and returns with the subarray
+unsorted, and after the top-level call to quick-sort returns, run insertion sort
+on the entire array to complete the sorting. Prove that this quicksort variant 
+runs in $O(nk+n\log (n/k))$. In theory, how should $k$ be selected? \\
+\textbf{a) Prove this quicksort variant runs in $O(nk+n\log (n/k))$} \\
+- For this proof let us split this into the quicksort and insertion sort algorithms respectively \\
+\underline{QUICKSORT:} \\
+- since this version of quicksort stops recursion when it encounters a subarray of size smaller than k \\
+- thus the array is divided into \(\frac{n}{k}\) subarray's. Each subarray will be size \(\approx{k}\) \\
+- now the recursion depth is O(\(\log{\frac{n}{k}}\)) \\
+- each level of recursion needs O(n) operations since we partition the array around the pivot \\
+- Therefore, total work done by quicksort is O(\(n\log{\frac{n}{k}}\)) \\
+\underline{INSERTION SORT:} \\
+- after the quicksort phase each subarray smaller than k is almost (but not completely) sorted, now the entire array is sorted using insertion sort \\
+- Insertion sort has a worst-case time complexity of \(O(n^2)\) for an unsorted array, but since our subarray's are nearly sorted the complexity drops \\
+- now insertion sort will perform O(k) operations for each element, this occurs once for each element \\
+- Therefore, time for insertion sort of O(nk) \\
+\underline{TOTAL RUNNING TIME:} \\
+- Combining the two values we got from the quicksort and insertion sort analysis we find that the total running time of this version of the algorithm is O(\(nk+n\log{\frac{n}{k}}\)) \\
+
+\textbf{b) how should k be selected?} \\
+- In this scenario the selection of k depends on the trade-off between the amount of time spent within the quicksort or the insertion sort phases of the algorithm \\
+- A smaller k means a faster quicksort but slower insertion sort \\
+- A bigger k means a faster insertion sort but slower quicksort \\
+- In theory, k should be chosen to minimize the overall time complexity. However, finding the ideal k depends on different and specific circumstances since we would want to utilize the strengths of both algorithms (quicksort good at unsorted arrays, insertion sort good at nearly sorted arrays) \\
+- Overall, smaller values of k would be better since quicksort is generally faster than insertion sort in the average case
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 15 points
+
+Implement the algorithm Randomized-Quicksort discussed in class and the variant
+of Randomized-Quicksort given in Question 3 by a same programming language (any
+language is OK) on a same computing platform. Report the running times of the two
+algorithms for sorting $n$ numbers with $n=2^i\times 1000$, $i=0,1,2,3,4,5$. Give 
+your suggestion on selecting $k$ in practice (e.g., the $k$ achieves the best 
+running time in your implementation). Code submission is not needed. \\
+\underline{Randomized-Quicksort} \\
+- n=1000: 0.00008358 seconds \\
+- n=2000: 0.000169671 seconds \\
+- n=4000: 0.000435322 seconds \\
+- n=8000: 0.00084758 seconds \\
+- n=16000: 0.00175784 seconds \\
+- n=32000: 0.00376728 seconds \\
+\underline{Variant Randomized-Quicksort (k=20)} \\
+- n=1000: 0.00007337 seconds \\
+- n=2000: 0.000161785 seconds \\
+- n=4000: 0.000330064 seconds \\
+- n=8000: 0.000760091 seconds \\
+- n=16000: 0.0018108 seconds \\
+- n=32000: 0.00348952 seconds \\
+\textbf{NOTE: Selecting k in practice} \\
+- tested k ranges from 1-100, the ideal k changed depending on the input size n \\
+- however smaller values of k are faster than larger values (as mentioned in Q3) \\
+- For consistency I chose the k value that was fastest on average (this means that in some instances k=20 was not the fastest running time)
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 15 points (P 8-2 of text book) 
+
+Given an array $A$ of $n$ elements, each element is $0$ or $1$, an algorithm for
+sorting $A$ into increasing order might possess some subset of the following three
+desirable properties:
+
+(1) The algorithm runs in $O(n)$ time.
+
+(2) The algorithm is stable.
+
+(3) The algorithm sorts in place, using no more than a constant amount of storage
+space in addition to $A$.
+
+\textbf{(a) Give an algorithm that satisfies (1) and (2) above.} \\
+- We can use a variant of Counting Sort where we count the number of 0s in a single iteration then rewrite the array with 0s followed by 1s \\
+- this is an O(n) operation that maintains the original order
+\begin{verbatim}
+count = 0
+for i = 0 to n-1
+    if A[i] == 0
+        count = count + 1
+
+for i = 0 to count-1
+    A[i] = 0
+for i = count to n-1
+    A[i] = 1
+\end{verbatim}
+\textit{NOTE: we could also use Bucket Sort since our input is a binary array}
+
+\textbf{(b) Give an algorithm that satisfies (1) and (3) above.} \\
+- To maintain O(n) and sort in place we can use the 2 pointer approach, one starting at the beginning of the array and one at the end \\
+- we can move all the 0s to the start, all the 1s to end
+\begin{verbatim}
+left = 0
+right = n - 1
+
+while left < right
+    // find the first 1 from the left of the array
+    while A[left] == 0 and left < right
+        left = left + 1
+    // find the first 0 from the right of the array
+    while A[right] == 1 and left < right
+        right = right - 1
+    if left < right
+        swap A[left] and A[right]
+        left = left + 1
+        right = right - 1
+\end{verbatim}
+
+\textbf{(c) Give an algorithm that satisfies (2) and (3) above.} \\
+- To maintain order (stability) and sort in place we can use Insertion sort \\
+- however, since we have a binary array we can alter insertion sort to run in O(n) for this specific case by dividing the array into a \textit{sorted} and \textit{unsorted} parts \\
+- Conceptually, iterate over the array and find a 1 that has an adjacent 0 (to the right) and swap them
+\begin{verbatim}
+for i = 1 to n - 1
+    key = A[i]
+    j = i - 1
+
+    while j >= 0 and A[j] > key
+        A[j + 1] = A[j]
+        j = j - 1
+
+    A[j + 1] = key
+
+\end{verbatim}
+
+\noindent\rule{16cm}{0.1pt}
+
+\item 20 points (P 9-3 of text book) 
+
+For $n$ elements $x_1,...,x_n$ with positive weights $w_1,..,w_n$ such that
+$\sum_{i=1}^n w_i=1$, we say $x_i<x_k$ if $w_i<w_k$ or $w_i=w_k$ and $i<k$. For
+$x_1,..,x_n$, the (lower) median is $x_k$ with $k=\ceil{n/2}$ and the weighted 
+(lower) median is the element $x_k$ satisfying $\sum_{x_i<x_k} w_i<\frac{1}{2}$ 
+and $\sum_{x_i>x_k} w_i\leq \frac{1}{2}$. Example: for $x_1,..,x_7$
+with $w_1=0.1,w_2=0.35,w_3=0.05,w_4=0.1,w_5=0.15,w_6=0.05,w_7=0.2$, the median of
+$x_1,..,x_7$ is $x_4$ but the weighted median is $x_7$.
+
+\textbf{(a) Prove that the median of $x_1,..,x_n$ is the weighted median of $x_1,..,x_n$
+with weight $w_i=1/n$ for $1\leq i\leq n$.} \\
+- When all weights are equal ($w_i = 1/n$), each element $x_i$ has the same impact on the weighted median \\
+- since each element has an equal share of the total weight (which sums to 1), the middle element will also be the point at which the cumulative weight is 1/2 \\
+- in this case, the weighted median aligns with the normal median (which is the middle element) \\
+
+\textbf{(b) Show how to compute the weighted median of $n$ elements in $O(n\log n)$
+worst-case time using sorting.} \\
+- To compute the weighted median using sorting, we could do the following: \\
+1. sort the elements $x_1,..,x_n$ based on their values \\
+2. Calculate the cumulative weight for the sorted elements \\
+3. Find the smallest i such that the cumulative weight $\sum_{k=1}^i w_i\geq \frac{1}{2}$ \\
+- Sorting step takes $O(n\log n)$ (ex. quicksort or merge-sort) \\
+- Weight calculation and finding the correct i take $O(n)$ \\
+- Therefore, the entire process is $O(n\log n)$ 
+\begin{verbatim}
+WeightedMedianWithSorting(Elements E, Weights W)
+    n = length(E)
+    combinedList = array of pairs (element, weight) of size n
+    for i from 1 to n
+        combinedList[i] = pair(E[i], W[i])
+
+    Sort combinedList based on the first value of each pair
+
+    cumulativeWeight = 0
+    for i from 1 to n
+        cumulativeWeight = cumulativeWeight + combinedList[i].weight
+        if cumulativeWeight >= 1/2
+            return combinedList[i].element
+
+\end{verbatim}
+\textit{NOTE: we could also use an altered version of Randomized-Select to account for the weights}
+
+\textbf{(c) Show how to compute the weighted median in $\Theta(n)$ worst-case time using a
+linear-time median algorithm such as SELECT from Section 9.3.} \\
+- Using a modified version of SELECT, adjust the selection process to account for weights \\
+-  The key difference is how the median is defined and found in steps 2 and 5, taking the weights into account to ensure the weighted balance \\
+
+1. \textbf{Grouping:} Divide n elements into \(\ceil{n/5}\) groups of 5 elements each and at most one group with the remaining n mod 5 elements. 
+
+2. \textbf{Median Finding:} Sort each group and find the median of each group, using the weights to calculate the median such that the sum of weights is balanced on either side of it within the group.
+
+3. \textbf{Recursive Selection:} sing the weights of the medians, apply WEIGHTED-SELECT recursively to find the median x of the \(\ceil{n/5}\) medians found in Step 2.
+
+4. \textbf{Partitioning:} Partition n elements using x as the pivot. Let k be the sum of weights of the elements smaller than x, and k' be the sum of weights of the elements equal to x.
+
+5. \textbf{Median Check:} If \(k < 1/2\) and \( k + k' \geq 1/2\), then return x. This is because the weighted median will be x, as the weights are balanced around it.
+
+6. \textbf{Recursive Weighted Selection:} Otherwise, if \( k \geq 1/2\), apply WEIGHTED-SELECT recursively to the elements smaller than x to find the weighted median, adjusting the target weight to be the original target weight minus the sum of weights of elements greater than x.
+
+7. \textbf{Recursive Weighted Selection Cont:} If \(k < 1/2\), apply WEIGHTED-SELECT recursively to the elements greater than x to find the weighted median, adjusting the target weight to be the original target weight minus k.
+
+
+\end{enumerate}
+
+\end{document}
+
+

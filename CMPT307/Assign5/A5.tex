@@ -1,0 +1,276 @@
+\documentclass[letterpaper,12pt]{article}
+\textwidth=6.5in
+\textheight=8.7in
+\oddsidemargin=-0.2in
+\topmargin=-0.7in
+\parskip=0.05 in
+\usepackage{graphicx}
+%\usepackage{verbatim}
+%\usepackage{graphicx}
+\usepackage{epsfig}
+%***************** new package****************
+\usepackage{amsmath,amssymb,amsthm}
+%\usepackage{latexsym} % used f
+
+\newcommand{\nil}{{\mathop{\rm nil}}}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+
+
+\begin{document}
+%\pagestyle{empty}
+%\pagestyle{plain}
+\bibliographystyle{plain}
+\pagestyle{myheadings}
+\markright{CMPT307 24-1 Assignment 5 | Jai Malhi (301457742)}
+
+%\setlength{\baselineskip}{20pt}
+\noindent
+{\bf Due 23:59 March 24 (Sunday)}. There are 100 points in this assignment. \\
+Submit your answers ({\bf must be typed}) in pdf file to CourSys\\
+{\tt https://coursys.sfu.ca/2024sp-cmpt-307-d1/}.\\
+Submissions received after 23:59 will get penalty of reducing points: 20 and 50 points
+deductions for submissions received at $[00:00,00:10]$ and $(00:10,00:30]$ of March 25,
+respectively; no points will be given to submissions after $00:30$ of March 25.
+
+\begin{enumerate}
+\item 10 points (Ex 19.1-2 and 19.1-3 of text book)
+
+\textbf{(a) Prove that after all edges are processed by procedure Connected-Components discussed
+in class, two vertices are in the same connected component if and only if they are in the 
+same set.} \\
+- A strongly connected component of a directed graph is a maximal subset of nodes such that for every pair of nodes u and v within this subset, there is a path from u to v and a path from v to u \\
+- When the algorithm provided in class performs DFS on $G^T$ we are following the edges in reverse (opposed to DFS on G) \\
+- If two vertices u and v are in the same Strongly-Connected-Component of G, there must be paths from u to v and v to u \\
+- Thus we know that when we find $G^T$ we can still reach u from v and vice versa \\
+- Further, two vertices u and v are in the same tree of the the depth-first forest of $G^T$ if and only if they are in the same Strongly-Connected-Component of G and each tree corresponds to a set of nodes that are in the same Strongly-Connected-Component \\
+- Therefore, u and v are in the same set if and only if they are in the same connected component \\
+
+\textbf{(b) During the execution of Connected-Components (discussed in class) on an undirected 
+graph $G$ with $k$ components, how many times is Find-Set called? How many times is Union 
+called? Express your answers in terms of $|V|$, $|E|$ and $k$.} \\
+- $Find \ Set$ is usually called once for each vertex when checking its membership of a set, however as edges get processed and vertices are grouped into components $Find \ Set$ is called an additional time for each edge (checking if vertices are already connected in same set). This leads to $|E|$ more calls. \textbf{Therefore} $Find \ Set$ is called $|V|+|E|$ times \\
+- $Union$ is called each time an edge is processed that connected vertices in separate components. In the worst case every edge may connect different components until there are $k$ components left. \textbf{Therefore}, $|E|-(k-1)$ union calls can occur since we need $k-1$ edges to connect $k$ components \\
+
+\noindent\rule{16cm}{0.1pt}
+\item 10 points (Ex 19.2-3 of text book)
+
+\textbf{Adapt the aggregate proof of slide 26 (Theorem 19.1 in the text book) to obtain amortized 
+time bounds of $O(1)$ for Make-Set and Find-Set and $O(\log n)$ for Union using linked
+list representation and weighted-union heuristic.} \\
+- In the proof shown on slide 26 we conclude that the time for $n$ Union operations was at most $O(nlogn)$ \\
+- This means that it took an amortized cost of $O(nlogn)/n = O(logn)$ for the Union operation \\
+- Further, since there is only a constant amount of work done by the Make-Set and Find-Set methods they both have a $O(1)$ runtime \\
+
+\noindent\rule{16cm}{0.1pt}
+\item 20 points (Ex 20.1-3 of text book) 
+
+\textbf{The \underline{transpose} of a directed graph $G(V,E)$ is the graph $G^T(V,E^T)$,
+where $E^T=\{(u,v)|(v,u)\in E\}$. That is, $G^T$ is obtained from $G$ by
+reversing the direction of every edge of $G$. Give algorithms in pseudo
+code to compute $G^T$ from $G$, one algorithm for $G$ represented in adjacent-list
+and one for $G$ represented in adjacent-matrix.
+Analyze the running times of your algorithms.} \\ \\
+\underline{Adjacency-list representation:}
+\begin{verbatim}
+TransposeGraphAdjacencyList(G)
+    // G is represented as an adjacency list
+    let G_T be a new graph with the same vertices as G and no edges
+    for each vertex u in G
+        for each vertex v in G[u] // G[u] is the adjacency list for vertex u
+            Add edge (v, u) to G_T
+    return G_T
+
+\end{verbatim}
+- We have to visit each vertex and each edge exactly once, if the number of vertices is $V$ and the number of edges is $E$, then the running time is $O(|V|+|E|)$ since we go through every edge and vertex once \\
+
+\underline{Adjacency-matrix representation:}
+\begin{verbatim}
+TransposeGraphAdjacencyMatrix(G)
+    // G is represented as an adjacency matrix
+    // V is the number of vertices
+    let G_T be a new V x V matrix initialized with 0's
+    for i from 1 to V
+        for j from 1 to V
+          G_T[j][i] = G[i][j]
+    return G_T
+\end{verbatim}
+- Transpose the matrix by looking along every entry above the diagonal, and swapping it with the entry that occurs below the diagonal, we get a running time of $O(|V|^2)$ since we visit each cell of the V x V matrix\\
+
+
+\noindent\rule{16cm}{0.1pt}
+\item 10 points (Ex 20.2-4 of text book)
+
+\textbf{Modify the BFS discussed in class (slide 14 or section 20.2 of text book)
+to a breadth first search algorithm in pseudo code for graphs represented by
+adjacent matrix, and give the running time of the modified breadth first
+search algorithm.} \\
+- To modify BFS to use a adjacency matrix we have to consider the "0" cells that represent no edge \\
+- to do this we can modify the inner loop to iterate through all vertices and check for an edge \\
+\begin{verbatim}
+// white = v hasn't been discovered
+// grey = v discovered, edges from v not searched
+// black = v has been found, all edges from v searched
+ModifiedBFS(G, s)
+    for i from 1 to G.V.length
+        G.V[i].color = white
+        G.V[i].d = infinity
+        G.V[i].pi = nil
+    G.V[s].color = grey
+    G.V[s].d = 0
+    G.V[s].pi = nil
+    Q = null set
+    Enqueue(Q, s)
+    while Q != null set
+        u = Dequeue(Q)
+        for v from 1 to G.V.length
+            if G.Adj[u][v] == 1 and G.V[v].color == white
+                G.V[v].color = grey
+                G.V[v].d = G.V[u].d + 1
+                G.V[v].pi = u
+                Enqueue(Q, v)
+        G.V[u].color = black
+\end{verbatim}
+- Since we check all vertices (V) to check for an edge we get a running time of $O(|V|^2)$
+
+\noindent\rule{16cm}{0.1pt}
+\item 10 points (P 20-2 of text book)
+
+\textbf{An articulation point of an undirected graph $G$ is a node whose removal
+disconnects $G$. Let $G_{\pi}$ be a depth-first tree of $G$. Prove that the root
+of $G_{\pi}$ is an articulation point of $G$ if and only if it has at least two
+children in $G_{\pi}$.} \\
+- To prove the root of $G_\pi$ is an articulation point of G if and only if it has at least two children in $G_\pi$: \\ \\
+\textbf{1.} If the root has at least two children, it is an articulation point \\
+- assume that the root $r$ of $G_{\pi}$ has a least two children $u$ and $v$ \\
+- these two children lead to two separate sub-trees $T_u$ and $T_v$ \\
+- if root $r$ is removed, there will be no path between the vertices in $T_u$ and $T_v$ since $r$ was the only common connection \\
+- Therefore, removing $r$ disconnects the graph making $r$ an articulation point \\ \\
+\textbf{2.} If the root is an articulation point, it has at least two children \\
+- assuming that the root $r$ of $G_{\pi}$ is an articulation point of $G$ \\
+- Removing $r$ disconnects $G$, increasing the number of connected components \\
+- for $r$ to disconnect $G$, $r$ must have at least two children because if it only had one child, removing $r$ would not disconnect $G$ since other vertices would still be connected through a single subtree \\
+
+Therefore, the root $r$ of $G_{\pi}$ is an articulation point of $G$ if and only if it has at least two children in $G_{\pi}$ \\
+
+\noindent\rule{16cm}{0.1pt}
+\item 20 points (Ex 21.1-6 of text book)
+
+\textbf{Show that a graph $G$ has a unique minimum spanning tree if, for every cut of the
+graph, there is a unique light edge crossing the cut. Show that the converse is not
+true by giving a counterexample.} \\
+- Want to prove that a graph $G$ has a unique minimum spanning tree if, for every cut of the graph, there is a unique light edge crossing the cut \\
+- Assume that every cut of the graph $G$ has a unique light edge that crosses it, we know that a light edge is the edge of a minimum weight that connects cut $(S, V \backslash S)$ \\
+- Further we know that by definition a MST $T$ of a connected graph $G$ is a subset of edges of $G$ that connects all vertices together without any cycles and with the minimum total edge weight \\
+- If $G$ has more than one MST, then there is at least one cut in the graph for which there are two equally light edges crossing it; this is true because looking at any MST, consider a cut for which the tree has the light edge, in the other MST there must another edge crossing the cut since the trees differ \\
+- Thus, if there is a unique light edge for every cut, this situation cannot occur since the edge selected by the cut would have to be included in every MST to be minimal, leading to uniqueness \\
+- Therefore, since we assume that every cut of $G$ has a unique light edge, we show that having such a property forces the MST to be unique \\
+
+\textbf{Counter Example:} \\
+- Converse proof: to show the converse is not true we find a example where a graph $G$ has a unique MST, but there is a cut with more than one light edge of teh same weight crossing it \\
+- Consider a triangle graph $G$ with vertices $A,B,C$ and edges $AB,BC,CA$ all with the same weight \\
+- this graph has a unique MST since all spanning trees will have the same weight (sum of two edges, since we avoid cycles) \\
+- However, if we making a cut that separates any vertex from the other two, we see that there are two edges crossing the cut, both of the same weight \\
+- this violates the condition of having a unique light edge crossing the cut, but the graph still has a unique MST \\
+- Therefore, this example shows that the converse is not always true
+
+\noindent\rule{16cm}{0.1pt}
+\item 20 points 
+
+Write two programs for Prim's minimum spanning tree algorithm discussed in class,
+one implements the algorithm with the input graph $G$ represented by adjacent list
+and the other implements the algorithm with $G$ represented by adjacent matrix. Run
+your programs on the graph in Figure 1 starting from node $a$ and show
+the minimum spanning tree found. (10 points) Run your programs on connected edge-weighted 
+$G$ with $n=100,200,400,800$ nodes, for each $n$, with $m\approx 3n,n^{1.5},n(n-1)/2$ 
+edges, and each edge is assigned a random number from $[1,a]$ for some $a>1$. 
+Report the running times of your programs on a computer. Write a procedure to create 
+input graphs for both implementations and exclude the running time of the procedure 
+from the times of your implmentations for Prim's algorithm. Please do not submit the codes.
+(Hint: For each $n$, first create a connected base graph of nodes $v_1,..,v_n$, e.g., a cycle,
+then add $m-n$ edges $\{u,v\}$ with $u,v$ randomly selected from $\{v_1,..,v_n\}$ to
+the base graph.) 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{q7.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\textbf{Part 1: Show Minimum Spanning Trees}
+
+\textbf{Adjacent List MST:} 
+\begin{verbatim}
+0 - 1 (a - b)
+1 - 2 (b - c)
+2 - 8 (c - i)
+2 - 5 (c - f)
+5 - 6 (f - g)
+6 - 7 (g - h)
+2 - 3 (c - d)
+3 - 4 (d - e)
+\end{verbatim}
+
+\textbf{Adjacent Matrix MST:} 
+\begin{verbatim}
+0 - 1 (a - b)
+1 - 2 (b - c)
+2 - 3 (c - d)  
+3 - 4 (d - e)  
+2 - 5 (c - f)  
+5 - 6 (f - g) 
+6 - 7 (g - h) 
+2 - 8 (c - i) 
+\end{verbatim}
+
+\textbf{Part 2: Running Times} \\
+\underline{1. n = 100} \\
+\textbf{m = 3n} \\
+- using adjacency list: 0.0001 seconds \\
+- using adjacency matrix: 0.000434 seconds \\
+\textbf{m = $n^{1.5}$} \\
+- using adjacency list: 0.000214 seconds \\
+- using adjacency matrix: 0.000421 seconds \\
+\textbf{m = n(n-1)/2} \\
+- using adjacency list: 0.000475 seconds \\
+- using adjacency matrix: 0.000417 seconds \\
+\\
+\underline{2. n = 200} \\
+\textbf{m = 3n} \\
+- using adjacency list: 0.000212 seconds \\
+- using adjacency matrix: 0.001817 seconds \\
+\textbf{m = $n^{1.5}$} \\
+- using adjacency list: 0.000452 seconds \\
+- using adjacency matrix: 0.001771 seconds \\
+\textbf{m = n(n-1)/2} \\
+- using adjacency list: 0.001481 seconds \\
+- using adjacency matrix: 0.001599 seconds \\
+\\
+\underline{3. n = 400} \\
+\textbf{m = 3n} \\
+- using adjacency list: 0.000453 seconds \\
+- using adjacency matrix: 0.007237 seconds \\
+\textbf{m = $n^{1.5}$} \\
+- using adjacency list: 0.001096 seconds \\
+- using adjacency matrix: 0.006712 seconds \\
+\textbf{m = n(n-1)/2} \\
+- using adjacency list: 0.005846 seconds \\
+- using adjacency matrix: 0.006387 seconds \\
+\\
+\underline{4. n = 800} \\
+\textbf{m = 3n} \\
+- using adjacency list: 0.001213 seconds \\
+- using adjacency matrix: 0.030459 seconds \\
+\textbf{m = $n^{1.5}$} \\
+- using adjacency list:0.002676 seconds \\
+- using adjacency matrix: 0.027243 seconds \\
+\textbf{m = n(n-1)/2} \\
+- using adjacency list: 0.041423 seconds \\
+- using adjacency matrix: 0.025843 seconds \\
+
+\end{enumerate}
+
+\end{document}
+
+
